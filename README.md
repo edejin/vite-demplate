@@ -1,5 +1,7 @@
+# Usage
+
 ```bash
-npx degit user/project my-project
+npx degit edejin/vite-demplate my-project
 ```
 
 # React + TypeScript + Vite
