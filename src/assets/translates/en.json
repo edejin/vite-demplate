@@ -1,0 +1,24 @@
+{
+  "Home": "Home",
+  "List": "List",
+  "App": "App",
+  "subnav {value}": "subnav {value}",
+  "option {value}": "option {value}",
+  "text <span>{value}</span>.": [{
+    "type": 0,
+    "value": "text "
+  }, {
+    "type": 8,
+    "value": "span",
+    "children": [
+      {
+        "type": 2,
+        "value": "value"
+      }
+    ]
+  }, {
+    "type": 0,
+    "value": "."
+  }],
+  "{value, plural, one {{value} item} other {{value} items}}": "{value, plural, one {{value} item} other {{value} items}}"
+}
