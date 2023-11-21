@@ -3,7 +3,7 @@ import { IntlProvider, MissingTranslationError } from 'react-intl';
 import { log } from '@/utils';
 import { ConfigProvider, theme } from 'antd';
 import { StyleSheetManager } from 'styled-components';
-import rtlcss from 'stylis-rtlcss';
+import rtlPlugin from "stylis-plugin-rtl";
 import { Locale, RTLLocales, useLocaleStore } from '@/store/locale';
 import { GlobalStyle } from './GlobalStyles';
 
@@ -57,7 +57,7 @@ export const Providers: React.FC<Props> = ({ children }: React.PropsWithChildren
   }, [locale]);
 
   return (
-    <StyleSheetManager {...(direction(locale) === 'rtl' ? { stylisPlugins: [rtlcss] } : {})}>
+    <StyleSheetManager {...(direction(locale) === 'rtl' ? { stylisPlugins: [rtlPlugin] } : {})}>
       <>
         <GlobalStyle />
         <StyleProvider hashPriority={'high'}>

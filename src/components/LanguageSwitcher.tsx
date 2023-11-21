@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import {TranslationOutlined} from '@ant-design/icons';
 
 const Wrapper = styled.div`
-  float: right;
-  /* 'rtl:ignore' cannot be first line :)  */
-  /* rtl:ignore */
+  /*! @noflip */
   border-right: 1px solid red;
+  float: right;
   padding: 0 8px;
   font-size: 16px;
   cursor: pointer;

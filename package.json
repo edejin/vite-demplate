@@ -18,7 +18,8 @@
     "react-intl": "^6.5.0",
     "react-router-dom": "^6.17.0",
     "styled-components": "^6.1.0",
-    "stylis-rtlcss": "^2.1.1",
+    "stylis": "^4.3.0",
+    "stylis-plugin-rtl": "^2.1.1",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
