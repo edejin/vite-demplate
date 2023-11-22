@@ -4,6 +4,9 @@ import {Theme, useThemeStore} from '@/store/theme';
 import {MapComponent, MapStyle} from '@/components/MapComponent';
 import {useCallback} from 'react';
 import {Map} from 'maplibre-gl';
+import {Typography} from 'antd';
+
+const {Title} = Typography;
 
 export const Page2 = () => {
   const setMap = useMapStore(state => state.setMap);
@@ -17,7 +20,7 @@ export const Page2 = () => {
 
   return (
     <>
-      <p>Page 2</p>
+      <Title level={5}>Page 2</Title>
       <MapComponent
         mapStyle={theme === Theme.Light ? MapStyle.LIGHT : MapStyle.DARK}
         callback={callback}

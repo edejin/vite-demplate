@@ -57,7 +57,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
     });
 
     let destructor: void | (() => void);
-    map.current.once('style.load', () => {
+    map.current!.once('style.load', () => {
       if (callback) {
         destructor = callback(map.current);
       }

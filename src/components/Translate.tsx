@@ -1,4 +1,5 @@
 import {FormattedMessage} from 'react-intl';
+import React from 'react';
 
 interface Props {
   z: string;

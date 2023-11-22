@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { IntlProvider, MissingTranslationError } from 'react-intl';
 import { log } from '@/utils';
 import { ConfigProvider, theme } from 'antd';
@@ -38,9 +38,7 @@ interface Props {
 }
 
 export const Providers: React.FC<Props> = ({ children }: React.PropsWithChildren<Props>) => {
-  const {
-    locale
-  } = useLocaleStore();
+  const locale = useLocaleStore(s => s.locale);
   const currentTheme = useThemeStore(v => v.theme);
 
   const errorHandler = useCallback<OnErrorFn>((data) => {

@@ -1,10 +1,12 @@
 import {useEffect} from 'react';
 import {T} from '@/components/Translate';
 import {useTestStore} from '@/store/test';
-import {Button} from 'antd';
+import {Button, Typography} from 'antd';
 import {log} from '@/utils';
 import {FieldTimeOutlined} from '@ant-design/icons';
 import {useShallow} from 'zustand/react/shallow';
+
+const {Text} = Typography;
 
 export const A = () => {
   // Incorrect way:
@@ -26,7 +28,9 @@ export const A = () => {
   });
   return (
     <div>
-      <T z="text <span>{value}</span>." values={{span: (chunks: JSX.Element) => <span>{chunks}</span>, value: a.toString()}}/>
+      <Text>
+        <T z="text <span>{value}</span>." values={{span: (chunks: JSX.Element) => <span>{chunks}</span>, value: a.toString()}}/>
+      </Text>
       <Button onClick={addA}>+</Button>
       <Button onClick={removeA}>-</Button>
       <Button onClick={() => addAWithDelay(3000)}>

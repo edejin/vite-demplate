@@ -26,6 +26,8 @@ export const cancelableFetch = (input: RequestInfo | URL, init?: RequestInit): C
   let finished = false;
   q.then(() => {
     finished = true;
+  }, () => {
+    finished = true;
   });
 
   q.cancel = (reason?: any) => {
