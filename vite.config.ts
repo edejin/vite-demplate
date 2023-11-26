@@ -6,6 +6,8 @@ import {viteStaticCopy} from 'vite-plugin-static-copy';
 import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
 import Options from '@vitejs/plugin-react';
 
+const splitToChunks = true;
+
 // https://vitejs.dev/config/
 export default ({mode}) => {
   const isDev = mode === 'development';
@@ -53,5 +55,23 @@ export default ({mode}) => {
     )
   }
 
-  return defineConfig({plugins});
+  const cnf = {
+    plugins
+  }
+
+  if (splitToChunks) {
+    cnf.build = {
+      rollupOptions: {
+        output:{
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return defineConfig(cnf);
 };
