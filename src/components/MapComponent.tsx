@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, useEffect, useRef, useState} from 'react';
 import ML, {Map, MapOptions, StyleSpecification} from 'maplibre-gl';
 import {cancelableFetch} from '@/utils';
 import styled from 'styled-components';
@@ -19,12 +19,16 @@ const MapElement = styled.div`
 interface Props extends Omit<MapOptions, 'container' | 'style'> {
   mapStyle?: MapStyle;
   callback?: (m?: Map) => () => void;
+  className?: string;
+  style?: CSSProperties;
 }
 
 export const MapComponent: React.FC<Props> = (option: Props) => {
   const {
     mapStyle = MapStyle.LIGHT,
     callback,
+    className,
+    style: cssStyle,
     ...props
   } = option;
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -68,10 +72,10 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
         destructor();
       }
       map.current?.remove();
-    }
+    };
   }, [style, callback]);
 
   return (
-    <MapElement ref={mapContainer}/>
+    <MapElement ref={mapContainer} className={className} style={cssStyle}/>
   );
 };
