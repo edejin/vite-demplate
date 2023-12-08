@@ -1,3 +1,5 @@
+import {useId} from 'react';
+
 export const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -39,3 +41,10 @@ export const cancelableFetch = (input: RequestInfo | URL, init?: RequestInit): C
 
   return q;
 };
+
+export const useCustomId = (id?: string) => {
+  return id ?? useId();
+}
+
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export const isDef = (e: any): boolean => e != undefined;
