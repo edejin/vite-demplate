@@ -4,7 +4,7 @@
 npx degit edejin/vite-demplate my-project
 ```
 
-# Upgrade depencdencies
+# Upgrade dependencies
 
 ```bash
 ncu -u
