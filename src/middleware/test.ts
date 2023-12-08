@@ -1,5 +1,6 @@
 import {Middleware} from '@/utils/zustand';
 import {Test} from '@/store/test';
+import {log} from '@/utils';
 
 export const testMiddleware: Middleware<Test> = (config) => (
   set,
@@ -7,5 +8,5 @@ export const testMiddleware: Middleware<Test> = (config) => (
   store
 ) => config(args => {
   set(args);
-  console.log('TODO: Add custom middleware logic here');
+  log('TODO: Add custom middleware logic here');
 }, get, store);
