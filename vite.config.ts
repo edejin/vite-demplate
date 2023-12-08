@@ -60,12 +60,18 @@ export default ({mode}) => {
   }
 
   if (splitToChunks) {
+    const names = [];
     cnf.build = {
       rollupOptions: {
         output:{
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+              const packageName = id.toString().split('node_modules/')[1].split('/')[0].toString();
+              let index = names.indexOf(packageName);
+              if (index === -1) {
+                index = names.push(packageName) - 1;
+              }
+              return `pack${index}`;
             }
           }
         }
