@@ -373,4 +373,4 @@ type PersistImpl = <T>(
 export const persist = persistImpl as unknown as Persist
 
 // eslint-disable-next-line  @typescript-eslint/ban-types
-export const persistMiddlewareCreator = <T extends {}>(options: PersistOptions<T>) => (s: StateCreator<T>) => persist<T>(s, options);
+export const persistMiddlewareCreator = <T, >(options: PersistOptions<T>) => (s: StateCreator<T>) => persist<T>(s, options);
