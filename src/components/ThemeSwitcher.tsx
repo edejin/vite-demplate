@@ -3,7 +3,7 @@ import {Switch} from 'antd';
 import LightIcon from '@/assets/icons/light.svg?react';
 import DarkIcon from '@/assets/icons/dark.svg?react';
 import {Theme, useThemeStore} from '@/store/theme';
-import {useShallow} from 'zustand/react/shallow';
+import {useSelector} from '@/utils';
 
 const Wrapper = styled.div`
   float: right;
@@ -13,10 +13,7 @@ const Wrapper = styled.div`
 `;
 
 export const ThemeSwitcher = () => {
-  const [theme, setTheme] = useThemeStore(useShallow((store) => {
-    const {theme, setTheme} = store;
-    return [theme, setTheme];
-  }));
+  const {theme, setTheme} = useThemeStore(useSelector(['theme', 'setTheme']));
 
   const changeHandler = (dark: boolean) => {
     setTheme(dark ? Theme.Dark : Theme.Light);

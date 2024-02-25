@@ -2,9 +2,8 @@ import {useEffect} from 'react';
 import {T} from '@/components/Translate';
 import {useTestStore} from '@/store/test';
 import {Button, Typography} from 'antd';
-import {log} from '@/utils';
+import {log, useSelector} from '@/utils';
 import {FieldTimeOutlined} from '@ant-design/icons';
-import {useShallow} from 'zustand/react/shallow';
 
 const {Text} = Typography;
 
@@ -18,10 +17,7 @@ export const A = () => {
   // const addA = useTestStore(store => store.addA);
 
   // Other correct way:
-  const [a, addA, removeA, addAWithDelay] = useTestStore(useShallow((store) => {
-    const {a, addA, removeA, addAWithDelay} = store;
-    return [a, addA, removeA, addAWithDelay];
-  }));
+  const {a, addA, removeA, addAWithDelay} = useTestStore(useSelector(['a', 'addA', 'removeA', 'addAWithDelay']));
 
   useEffect(() => {
     log('Rerender A!!!');
