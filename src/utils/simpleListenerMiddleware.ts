@@ -1,4 +1,4 @@
-import {isDef} from '@/utils/index';
+import {isDef, warn} from '@/utils/index';
 import {Middleware} from '@/utils/zustand';
 
 interface SimpleListenerDescriptor<T> {
@@ -33,87 +33,90 @@ type TmpStore<T> = [(keyof T)[], (keyof T)[], (keyof T)[], (keyof T)[], (keyof T
 const defaultCompareFunction = <T, >(prev: T, next: T, keyName: keyof T) => prev[keyName] !== next[keyName];
 const defaultIsDefFunction = <T, >(value: T, keyName: keyof T) => isDef(value[keyName]);
 
-export const addSimpleListeners = <T, >(listeners: SimpleListenerDescriptor<T>[]): Middleware<T> => (config) => (
-  set,
-  get,
-  store
-) => config(args => {
-  const prev = get();
-  set(args);
-  const next = get();
+export const addSimpleListeners = <T, >(listeners: SimpleListenerDescriptor<T>[]): Middleware<T> => {
+  warn('addSimpleListeners: This is experimental function!!!!!!!!!!!!!');
+  return (config) => (
+    set,
+    get,
+    store
+  ) => config(args => {
+    const prev = get();
+    set(args);
+    const next = get();
 
-  listeners.forEach((listener) => {
-    const {
-      key,
-      compareFunction = defaultCompareFunction,
-      isDefFunction = defaultIsDefFunction,
-      mount,
-      unmount,
-      change: changeHandler
-    } = listener;
-    let {
-      mounted = false
-    } = listener;
-    const k: (keyof T)[] = Array.isArray(key) ? key : [key];
+    listeners.forEach((listener) => {
+      const {
+        key,
+        compareFunction = defaultCompareFunction,
+        isDefFunction = defaultIsDefFunction,
+        mount,
+        unmount,
+        change: changeHandler
+      } = listener;
+      let {
+        mounted = false
+      } = listener;
+      const k: (keyof T)[] = Array.isArray(key) ? key : [key];
 
-    const [
-      add,
-      remove,
-      exist,
-      empty,
-      change
-    ] = k.reduce((a: TmpStore<T>, k: keyof T) => {
-      const [add, remove, exist, empty, change] = a;
-      const defPrev = isDefFunction(prev, k);
-      const defNext = isDefFunction(next, k);
-      if (!defPrev && defNext) {
-        add.push(k);
-      }
-      if (defPrev && !defNext) {
-        remove.push(k);
-      }
-      if (defPrev && defNext) {
-        exist.push(k);
-      }
-      if (!defPrev && !defNext) {
-        empty.push(k);
+      const [
+        add,
+        remove,
+        exist,
+        empty,
+        change
+      ] = k.reduce((a: TmpStore<T>, k: keyof T) => {
+        const [add, remove, exist, empty, change] = a;
+        const defPrev = isDefFunction(prev, k);
+        const defNext = isDefFunction(next, k);
+        if (!defPrev && defNext) {
+          add.push(k);
+        }
+        if (defPrev && !defNext) {
+          remove.push(k);
+        }
+        if (defPrev && defNext) {
+          exist.push(k);
+        }
+        if (!defPrev && !defNext) {
+          empty.push(k);
+        }
+        if (
+          (!defPrev && defNext) ||
+          (defPrev && !defNext) ||
+          compareFunction(prev, next, k)
+        ) {
+          change.push(k);
+        }
+        return [add, remove, exist, empty, change] as TmpStore<T>;
+      }, [[], [], [], [], []]);
+
+      if (
+        !mounted &&
+        remove.length === 0 &&
+        empty.length === 0 &&
+        add.length > 0 &&
+        (exist.length + add.length) === k.length &&
+        mount
+      ) {
+        mounted = true;
+        mount(next);
       }
       if (
-        (!defPrev && defNext) ||
-        (defPrev && !defNext) ||
-        compareFunction(prev, next, k)
+        mounted &&
+        add.length === 0 &&
+        empty.length === 0 &&
+        remove.length > 0 &&
+        (exist.length + remove.length) === k.length &&
+        unmount
       ) {
-        change.push(k);
+        mounted = false;
+        unmount(prev);
       }
-      return [add, remove, exist, empty, change] as TmpStore<T>;
-    }, [[], [], [], [], []]);
+      if (change.length && changeHandler) {
+        changeHandler(prev, next, change, mounted);
+      }
 
-    if (
-      !mounted &&
-      remove.length === 0 &&
-      empty.length === 0 &&
-      add.length > 0 &&
-      (exist.length + add.length) === k.length &&
-      mount
-    ) {
-      mounted = true;
-      mount(next);
-    }
-    if (
-      mounted &&
-      add.length === 0 &&
-      empty.length === 0 &&
-      remove.length > 0 &&
-      (exist.length + remove.length) === k.length &&
-      unmount
-    ) {
-      mounted = false;
-      unmount(prev);
-    }
-    if (change.length && changeHandler) {
-      changeHandler(prev, next, change, mounted);
-    }
-
-    listener.mounted = mounted;
-  });
-}, get, store);
+      listener.mounted = mounted;
+    });
+  }, get, store);
+};

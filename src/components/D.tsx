@@ -1,6 +1,7 @@
 import React, {CSSProperties} from 'react';
 import {useTestStore} from '@/store/test';
 import {Typography} from 'antd';
+import {useDeepSelector} from '@/utils';
 
 const {Text} = Typography;
 
@@ -10,15 +11,23 @@ interface Props {
   style?: CSSProperties;
 }
 
-export const C: React.FC<Props> = (props: Props) => {
+export const D: React.FC<Props> = (props: Props) => {
   const {
     className,
     style
   } = props;
-  const c = useTestStore(s => s.computed.c);
+
+  const {
+    a,
+    b,
+    computed: {
+      c
+    }
+  } = useTestStore(useDeepSelector(['a', 'b', 'computed.c']));
+
   return (
     <Text className={className} style={style}>
-      (computed example) a * b = {c}
+      (useDeepSelector example) a = {a}, b = {b}, c = {c}
     </Text>
   );
 };

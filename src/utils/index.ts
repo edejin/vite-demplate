@@ -10,6 +10,13 @@ export const log = (...args: any[]) => {
   }
 };
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export const warn = (...args: any[]) => {
+  if (isDev) {
+    console.warn(...args);
+  }
+};
+
 export const sleep = (delay: number = 330): Promise<void> => new Promise((cb) => {
   setTimeout(cb, delay);
 });
@@ -45,7 +52,7 @@ export const cancelableFetch = (input: RequestInfo | URL, init?: RequestInit): C
 
 export const useCustomId = (id?: string) => {
   return id ?? useId();
-}
+};
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export const isDef = (e: any): boolean => e != undefined;
@@ -55,6 +62,29 @@ type Pick<T, K extends keyof T> = {
 };
 
 type Many<T> = T | readonly T[];
+
+const deepPick = <S, >(state: S, path: string | string[]): Partial<S> => (
+  Array.isArray(path) ? path : [path]
+).reduce((a: Partial<S>, keys) => {
+  let u: any = a;
+  let y: any = state;
+
+  keys.split('.').forEach((k) => {
+    const e = y[k];
+
+    if (Array.isArray(e)) {
+      u[k] = [];
+    } else if (e !== null && typeof e === 'object') {
+      u[k] = {};
+    } else {
+      u[k] = e;
+    }
+    u = u[k];
+    y = y[k];
+  });
+
+  return a;
+}, {}) as Partial<S>;
 
 const pick = <S, >(state: S, path: Many<keyof S>) => ((Array.isArray(path) ? path : [path]) as S[]).reduce((res, path) => {
   res[path] = state[path];
@@ -69,6 +99,19 @@ export function useSelector<S extends object, P extends keyof S>(
   return (state: S) => {
     if (state) {
       const next = pick(state, paths);
+      return shallow(prev.current, next) ? prev.current : (prev.current = next);
+    }
+    return prev.current;
+  };
+}
+
+export function useDeepSelector<S extends object, P extends keyof S>(paths: string | string[]): (state: S) => Pick<S, P> {
+  warn('useDeepSelector: This is experimental function!!!!!!!!!!!!!');
+  const prev = useRef<Pick<S, P>>({} as Pick<S, P>);
+
+  return (state: S) => {
+    if (state) {
+      const next = deepPick(state, paths);
       return shallow(prev.current, next) ? prev.current : (prev.current = next);
     }
     return prev.current;
