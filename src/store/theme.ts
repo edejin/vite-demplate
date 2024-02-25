@@ -24,5 +24,5 @@ export const useThemeStore = applyMiddleware<Store>(store, [
     name: 'theme',
     syncDynamically: true
   }) as Middleware<Store>,
-  logMiddleware
+  logMiddleware<Store>()
 ]);

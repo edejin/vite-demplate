@@ -29,6 +29,6 @@ const store: StateCreator<Test> = (set, get) => ({
 });
 
 export const useTestStore = applyMiddleware<Test>(store, [
-  logMiddleware,
+  logMiddleware<Test>(),
   testMiddleware
 ]);
