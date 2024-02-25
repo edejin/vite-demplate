@@ -66,7 +66,8 @@ export const Providers: React.FC<Props> = ({ children }: React.PropsWithChildren
               locale={antVocabulary[locale]}
               direction={direction(locale)}
               theme={{
-                algorithm: currentTheme === Theme.Dark ? theme.darkAlgorithm : theme.defaultAlgorithm
+                algorithm: currentTheme === Theme.Dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+                hashed: false
               }}
             >
               <IntlProvider locale={locale} messages={vocabulary[locale]} onError={errorHandler}>

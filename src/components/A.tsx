@@ -32,6 +32,10 @@ const Wrapper = styled.div`
   }}
 `;
 
+const CustomButton = styled(Button)`
+  color: red;
+` as typeof Button;
+
 export const A = () => {
   // Incorrect way:
   // const {removeA, addA, a} = useTestStore();
@@ -53,11 +57,11 @@ export const A = () => {
         <T z="text <span>{value}</span>."
            values={{span: (chunks: JSX.Element) => <span>{chunks}</span>, value: a.toString()}}/>
       </Text>
-      <Button onClick={addA}>+</Button>
-      <Button onClick={removeA}>-</Button>
-      <Button onClick={() => addAWithDelay(3000)}>
+      <CustomButton onClick={addA}>+</CustomButton>
+      <CustomButton onClick={removeA}>-</CustomButton>
+      <CustomButton onClick={() => addAWithDelay(3000)}>
         <FieldTimeOutlined/>
-      </Button>
+      </CustomButton>
     </Wrapper>
   );
 };
