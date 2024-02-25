@@ -5,6 +5,9 @@ import {StateCreator} from 'zustand';
 import {addSimpleListeners} from '@/utils/simpleListenerMiddleware';
 
 export interface Test {
+  computed: {
+    c: number;
+  };
   a: number;
   b: number;
   addA: () => void;
@@ -15,6 +18,15 @@ export interface Test {
 }
 
 const store: StateCreator<Test> = (set, get) => ({
+  computed: {
+    get c() {
+      const {
+        a,
+        b
+      } = get();
+      return a * b;
+    }
+  },
   a: 0,
   b: 0,
   addA: () => set(state => ({a: state.a + 1})),
