@@ -55,13 +55,13 @@ export const useTestStore = applyMiddleware<Test>(store, [
         }
       },
       mount: () => {
-        log(` >> mounted`)
+        log(` >> mounted (a > 1 and b > 0. For more information check isDefFunction)`)
       },
       unmount: () => {
-        log(` >> unmounted`)
+        log(` >> unmounted (a <=1 or b <= 0. For more information check isDefFunction)`)
       },
       change: () => {
-        log(` >> changed`)
+        log(` >> changed (a or b changed. For more information check compareFunction)`)
       }
     }
   ]),
