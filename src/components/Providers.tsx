@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { IntlProvider, MissingTranslationError } from 'react-intl';
 import { log } from '@/utils';
 import { ConfigProvider, theme } from 'antd';
-import { StyleSheetManager } from 'styled-components';
+import {StyleSheetManager, ThemeProvider} from 'styled-components';
 import rtlPlugin from "stylis-plugin-rtl";
 import { Locale, RTLLocales, useLocaleStore } from '@/store/locale';
 import { GlobalStyle } from './GlobalStyles';
@@ -55,25 +55,29 @@ export const Providers: React.FC<Props> = ({ children }: React.PropsWithChildren
   }, [locale]);
 
   return (
-    <StyleSheetManager {...(direction(locale) === 'rtl' ? { stylisPlugins: [rtlPlugin] } : {})}>
-      <>
-        <GlobalStyle />
-        <StyleProvider hashPriority={'high'}>
-          <ConfigProvider
-            locale={antVocabulary[locale]}
-            direction={direction(locale)}
-            theme={{
-              algorithm: currentTheme === Theme.Dark ? theme.darkAlgorithm : theme.defaultAlgorithm
-            }}
-          >
-            <IntlProvider locale={locale} messages={vocabulary[locale]} onError={errorHandler}>
-              <HashRouter>
-                {children}
-              </HashRouter>
-            </IntlProvider>
-          </ConfigProvider>
-        </StyleProvider>
-      </>
+    <StyleSheetManager
+      {...(direction(locale) === 'rtl' ? { stylisPlugins: [rtlPlugin] } : {})}
+    >
+      <ThemeProvider theme={{currentTheme}}>
+        <>
+          <GlobalStyle />
+          <StyleProvider hashPriority={'high'}>
+            <ConfigProvider
+              locale={antVocabulary[locale]}
+              direction={direction(locale)}
+              theme={{
+                algorithm: currentTheme === Theme.Dark ? theme.darkAlgorithm : theme.defaultAlgorithm
+              }}
+            >
+              <IntlProvider locale={locale} messages={vocabulary[locale]} onError={errorHandler}>
+                <HashRouter>
+                  {children}
+                </HashRouter>
+              </IntlProvider>
+            </ConfigProvider>
+          </StyleProvider>
+        </>
+      </ThemeProvider>
     </StyleSheetManager>
   );
 };

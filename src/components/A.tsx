@@ -4,8 +4,33 @@ import {useTestStore} from '@/store/test';
 import {Button, Typography} from 'antd';
 import {log, useSelector} from '@/utils';
 import {FieldTimeOutlined} from '@ant-design/icons';
+import styled, {css} from 'styled-components';
+import {Theme} from '@/store/theme';
 
 const {Text} = Typography;
+
+const Wrapper = styled.div`
+  &::before {
+    display: block;
+  }
+  
+  ${({theme: {currentTheme}}) => {
+    if (currentTheme === Theme.Dark) {
+      return css`
+        &::before {
+          content: 'dark';
+          color: #ffffff;
+        }
+      `;
+    }
+    return css`
+        &::before {
+          content: 'light';
+          color: #000000;
+        }
+    `;
+  }}
+`;
 
 export const A = () => {
   // Incorrect way:
@@ -23,15 +48,16 @@ export const A = () => {
     log('Rerender A!!!');
   });
   return (
-    <div>
+    <Wrapper>
       <Text>
-        <T z="text <span>{value}</span>." values={{span: (chunks: JSX.Element) => <span>{chunks}</span>, value: a.toString()}}/>
+        <T z="text <span>{value}</span>."
+           values={{span: (chunks: JSX.Element) => <span>{chunks}</span>, value: a.toString()}}/>
       </Text>
       <Button onClick={addA}>+</Button>
       <Button onClick={removeA}>-</Button>
       <Button onClick={() => addAWithDelay(3000)}>
         <FieldTimeOutlined/>
       </Button>
-    </div>
+    </Wrapper>
   );
 };
