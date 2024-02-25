@@ -1,15 +1,11 @@
 import React, {
   CSSProperties,
-  HTMLAttributes,
-  PropsWithChildren,
-  ReactNode, useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState
 } from 'react';
 import ML, {Map, MapOptions, StyleSpecification} from 'maplibre-gl';
-import {cancelableFetch, isDef} from '@/utils';
+import {cancelableFetch} from '@/utils';
 import styled from 'styled-components';
 
 ML.workerUrl = './worker.js';
@@ -25,7 +21,7 @@ const MapElement = styled.div`
   position: relative;
 `;
 
-interface Props extends Omit<MapOptions, 'container' | 'style'>, PropsWithChildren {
+interface Props extends Omit<MapOptions, 'container' | 'style'> {
   mapStyle?: MapStyle;
   callback?: (m?: Map) => () => void;
   className?: string;
@@ -38,24 +34,11 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
     callback,
     className,
     style: cssStyle,
-    children,
     ...props
   } = option;
-  const mapContainer = useRef<HTMLDivElement>(null);
+  const mapContainer = useRef<HTMLDivElement>();
   const map = useRef<Map>();
   const [style, setStyle] = useState<StyleSpecification | undefined>(undefined);
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isDef(props.center)) {
-      map.current?.setCenter(props.center!);
-    }
-  }, [props.center]);
-  useEffect(() => {
-    if (isDef(props.zoom)) {
-      map.current?.setZoom(props.zoom!);
-    }
-  }, [props.zoom]);
 
   useEffect(() => {
     const f = cancelableFetch(mapStyle);
@@ -78,7 +61,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
 
     map.current = new Map({
       ...props,
-      container: mapContainer.current,
+      container: mapContainer.current!,
       style
     });
 
@@ -87,11 +70,9 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
       if (callback) {
         destructor = callback(map.current);
       }
-      setMounted(true);
     });
 
     return () => {
-      setMounted(false);
       if (destructor) {
         destructor();
       }
@@ -99,12 +80,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
     };
   }, [style, callback]);
 
-  const childCb = useCallback((child: ReactNode) => (mounted && React.isValidElement(child)) ? React.cloneElement(child, {map: map.current} as HTMLAttributes<any>) : child, [children, mounted]);
-  const childWithProps = useMemo(() => React.Children.map(children, childCb), [childCb]);
-
   return (
-    <MapElement ref={mapContainer} className={className} style={cssStyle}>
-      {childWithProps}
-    </MapElement>
+    <MapElement ref={mapContainer} className={className} style={cssStyle}/>
   );
 };
