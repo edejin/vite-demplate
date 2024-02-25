@@ -1,5 +1,5 @@
 import {applyMiddleware, logMiddleware} from '@/utils/zustand';
-import {sleep} from '@/utils';
+import {log, sleep} from '@/utils';
 import {testMiddleware} from '@/middleware/test';
 import {StateCreator} from 'zustand';
 import {addSimpleListeners} from '@/utils/simpleListenerMiddleware';
@@ -55,13 +55,13 @@ export const useTestStore = applyMiddleware<Test>(store, [
         }
       },
       mount: () => {
-        console.log(`mounted`)
+        log(` >> mounted`)
       },
       unmount: () => {
-        console.log(`unmounted`)
+        log(` >> unmounted`)
       },
       change: () => {
-        console.log(`changed`)
+        log(` >> changed`)
       }
     }
   ]),
