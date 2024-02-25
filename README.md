@@ -21,3 +21,6 @@ Also contain:
 - [I18n](https://formatjs.io/docs/getting-started/installation)
 - [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
 - [React Router DOM](https://reactrouter.com/en/main)
+
+### Old version
+[Here](https://github.com/edejin/cra-template-demplate)
