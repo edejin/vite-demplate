@@ -1,7 +1,7 @@
 {
   "version": 8,
   "id": "dark-matter",
-  "name": "Dark Matter",
+  "name": "Satellite Dark Matter",
   "sources": {
     "openmaptiles": {
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",

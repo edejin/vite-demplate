@@ -1,10 +1,10 @@
 import {MapStyles, useMapStore} from '@/store/map';
 import {Style} from 'mapbox-gl';
-import lightMapStyle from '@/assets/map-styles/style-light.json'
-import darkMapStyle from '@/assets/map-styles/style-dark.json'
+import lightMapStyle from '@/assets/map-styles/style-light.json';
+import darkMapStyle from '@/assets/map-styles/style-dark.json';
 import {Theme, useThemeStore} from '@/store/theme';
-import lightSatMapStyle from '@/assets/map-styles/style-sat-light.json'
-import darkSatMapStyle from '@/assets/map-styles/style-sat-dark.json'
+import lightSatMapStyle from '@/assets/map-styles/style-sat-light.json';
+import darkSatMapStyle from '@/assets/map-styles/style-sat-dark.json';
 
 export const calculateMapStyle = (): Style => {
   const {
@@ -40,14 +40,17 @@ export const calculateMapStyle = (): Style => {
   }
   const path = document.location.origin + document.location.pathname;
   if (resultTheme.glyphs) {
-    resultTheme.glyphs = resultTheme.glyphs.replaceAll('__REPLACE_ME__', path)
+    resultTheme.glyphs = resultTheme.glyphs.replaceAll('__REPLACE_ME__', path);
   }
   if (resultTheme.sprite) {
-    resultTheme.sprite = resultTheme.sprite.replaceAll('__REPLACE_ME__', path)
+    resultTheme.sprite = resultTheme.sprite.replaceAll('__REPLACE_ME__', path);
   }
   return resultTheme;
-}
+};
 
 export const changeMapStyle = () => {
-  useMapStore.getState().map?.setStyle(calculateMapStyle())
-}
+  const {
+    map
+  } = useMapStore.getState();
+  map?.setStyle(calculateMapStyle());
+};

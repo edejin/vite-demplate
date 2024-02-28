@@ -1,7 +1,7 @@
 {
   "version": 8,
   "id": "streets",
-  "name": "Streets",
+  "name": "Satellite Streets",
   "sources": {
     "openmaptiles": {
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
