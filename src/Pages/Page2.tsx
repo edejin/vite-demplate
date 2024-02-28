@@ -1,16 +1,19 @@
-import 'maplibre-gl/dist/maplibre-gl.css';
-import {useMapStore} from '@/store/map';
-import {Theme, useThemeStore} from '@/store/theme';
-import {MapComponent, MapStyle} from '@/components/MapComponent';
+import {MapStyles, useMapStore} from '@/store/map';
+import {MapComponent} from '@/components/MapComponent';
 import {useCallback} from 'react';
-import {Map} from 'maplibre-gl';
-import {Typography} from 'antd';
+import {Map} from 'mapbox-gl';
+import {Space, Switch, Typography} from 'antd';
+import {T} from '@/components/Translate';
+import {useSelector} from '@/utils';
 
 const {Title} = Typography;
 
 export const Page2 = () => {
-  const setMap = useMapStore(state => state.setMap);
-  const theme = useThemeStore(state => state.theme);
+  const {
+    setMap,
+    style,
+    setStyle
+  } = useMapStore(useSelector(['setMap', 'style', 'setStyle']));
   const callback = useCallback((m?: Map) => {
     setMap(m);
     return () => {
@@ -21,7 +24,14 @@ export const Page2 = () => {
   return (
     <>
       <Title level={5}>Page 2</Title>
-      <MapComponent mapStyle={theme === Theme.Light ? MapStyle.LIGHT : MapStyle.DARK} callback={callback}/>
+      <Space>
+        <Switch
+          checked={style === MapStyles.Satellite}
+          onChange={(v) => setStyle(v ? MapStyles.Satellite : MapStyles.Vector)}
+        />
+        <T z="Satellite or Vector"/>
+      </Space>
+      <MapComponent callback={callback}/>
     </>
   );
 };

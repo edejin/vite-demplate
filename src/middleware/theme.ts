@@ -1,23 +1,23 @@
 import {Middleware} from '@/utils/zustand';
-import {MapStore} from '@/store/map';
+import {ThemeStore} from '@/store/theme';
 import {changeMapStyle} from '@/middleware/cmd/mapStyles';
 
-export const mapMiddleware: Middleware<MapStore> = (config) => (
+export const themeMiddleware: Middleware<ThemeStore> = (config) => (
   set,
   get,
   store
 ) => config(args => {
   const {
-    style: styleOld
+    theme: themeOld
   } = get();
 
   set(args);
 
   const {
-    style
+    theme
   } = get();
 
-  if (style !== styleOld) {
+  if (theme !== themeOld) {
     changeMapStyle()
   }
 

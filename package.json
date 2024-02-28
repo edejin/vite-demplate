@@ -9,9 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/mapbox-gl": "^3.1.0",
     "antd": "^5.14.2",
     "map-fonts": "https://dej.in.ua/map-fonts-1.0.0.tgz",
-    "maplibre-gl": "^4.0.2",
+    "mapbox-gl": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^6.6.2",

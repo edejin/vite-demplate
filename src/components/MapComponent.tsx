@@ -2,18 +2,14 @@ import React, {
   CSSProperties,
   useEffect,
   useRef,
-  useState
 } from 'react';
-import ML, {Map, MapOptions, StyleSpecification} from 'maplibre-gl';
-import {cancelableFetch} from '@/utils';
+import MB, {Map, MapboxOptions} from 'mapbox-gl';
 import styled from 'styled-components';
+import {calculateMapStyle} from '@/middleware/cmd/mapStyles';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
-ML.workerUrl = './worker.js';
-
-export enum MapStyle {
-  DARK = '/map-styles/style-dark.json',
-  LIGHT = '/map-styles/style.json'
-}
+(MB as any).workerUrl = './worker.js';
+(MB as any).config.API_URL = '';
 
 const MapElement = styled.div`
   width: 500px;
@@ -21,48 +17,30 @@ const MapElement = styled.div`
   position: relative;
 `;
 
-interface Props extends Omit<MapOptions, 'container' | 'style'> {
-  mapStyle?: MapStyle;
-  callback?: (m?: Map) => () => void;
+interface Props extends Omit<MapboxOptions, 'container' | 'style'> {
+  callback?: (m?: Map) => void;
   className?: string;
   style?: CSSProperties;
 }
 
 export const MapComponent: React.FC<Props> = (option: Props) => {
   const {
-    mapStyle = MapStyle.LIGHT,
     callback,
     className,
     style: cssStyle,
     ...props
   } = option;
-  const mapContainer = useRef<HTMLDivElement>();
+  const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>();
-  const [style, setStyle] = useState<StyleSpecification | undefined>(undefined);
 
   useEffect(() => {
-    const f = cancelableFetch(mapStyle);
-
-    f.then((res) => res.text())
-      .then((text) => {
-        const path = document.location.origin + document.location.pathname;
-        return (JSON.parse(text.replaceAll('__REPLACE_ME__', path)) as unknown) as StyleSpecification;
-      })
-      .then((s) => setStyle(s));
-
-    return () => {
-      f.cancel();
-    };
-  }, [mapStyle]);
-
-  useEffect(() => {
-    if (!style) return;
     if (!mapContainer.current) return;
+    if (map.current) return;
 
     map.current = new Map({
       ...props,
       container: mapContainer.current!,
-      style
+      style: calculateMapStyle()
     });
 
     let destructor: void | (() => void);
@@ -72,13 +50,18 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
       }
     });
 
+    map.current!.on('click', (e) => {
+      console.log(e.features);
+    })
+
     return () => {
       if (destructor) {
         destructor();
       }
       map.current?.remove();
+      map.current = null;
     };
-  }, [style, callback]);
+  }, [callback]);
 
   return (
     <MapElement ref={mapContainer} className={className} style={cssStyle}/>

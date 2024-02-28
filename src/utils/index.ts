@@ -86,10 +86,10 @@ const deepPick = <S, >(state: S, path: string | string[]): Partial<S> => (
   return a;
 }, {}) as Partial<S>;
 
-const pick = <S, >(state: S, path: Many<keyof S>) => ((Array.isArray(path) ? path : [path]) as S[]).reduce((res, path) => {
+const pick = <S, >(state: S, path: Many<keyof S>) => ((Array.isArray(path) ? path : [path]) as (keyof S)[]).reduce((res: S, path: keyof S) => {
   res[path] = state[path];
   return res;
-}, {});
+}, {} as S);
 
 export function useSelector<S extends object, P extends keyof S>(
   paths: Many<P>
@@ -111,7 +111,7 @@ export function useDeepSelector<S extends object, P extends keyof S>(paths: stri
 
   return (state: S) => {
     if (state) {
-      const next = deepPick(state, paths);
+      const next = deepPick(state, paths) as Pick<S, P>;
       return shallow(prev.current, next) ? prev.current : (prev.current = next);
     }
     return prev.current;

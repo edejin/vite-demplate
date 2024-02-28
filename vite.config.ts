@@ -38,7 +38,7 @@ export default ({mode}) => {
         src: 'node_modules/map-fonts/*',
         dest: 'map-styles/fonts'
       }, {
-        src: 'node_modules/maplibre-gl/dist/maplibre-gl-csp-worker.js',
+        src: 'node_modules/mapbox-gl/dist/mapbox-gl-csp-worker.js',
         dest: '.',
         rename: 'worker.js'
       }]
