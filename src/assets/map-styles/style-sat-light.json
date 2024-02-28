@@ -10,7 +10,8 @@
     "Bing Source": {
       "tiles": ["https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=129&mkt=en&stl=H"],
       "tileSize": 256,
-      "type": "raster"
+      "type": "raster",
+      "maxzoom": 19
     }
   },
   "layers": [
@@ -47,7 +48,6 @@
       "id": "Bing Layer",
       "type": "raster",
       "source": "Bing Source",
-      "maxzoom": 20,
       "layout": {"visibility": "visible"},
       "paint": {"raster-opacity": 1},
       "filter": ["all"]
