@@ -2,6 +2,7 @@ import React, {CSSProperties} from 'react';
 import {useTestStore} from '@/store/test';
 import {Typography} from 'antd';
 import {useDeepSelector} from '@/utils';
+import {useLogging} from '@/utils/customHooks';
 
 const {Text} = Typography;
 
@@ -24,6 +25,9 @@ export const D: React.FC<Props> = (props: Props) => {
       c
     }
   } = useTestStore(useDeepSelector(['a', 'b', 'computed.c']));
+
+  useLogging('Value of A:', a);
+  useLogging('Value of A, B, C:', a, b, c);
 
   return (
     <Text className={className} style={style}>
