@@ -8,17 +8,24 @@ export const mapMiddleware: Middleware<MapStore> = (config) => (
   store
 ) => config(args => {
   const {
-    style: styleOld
+    style: styleOld,
+    projection: projectionOld
   } = get();
 
   set(args);
 
   const {
-    style
+    style,
+    projection,
+    map
   } = get();
 
   if (style !== styleOld) {
     changeMapStyle()
+  }
+
+  if (projection !== projectionOld) {
+    map?.setProjection(projection);
   }
 
 }, get, store);

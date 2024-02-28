@@ -7,6 +7,7 @@ import MB, {Map, MapboxOptions} from 'mapbox-gl';
 import styled from 'styled-components';
 import {calculateMapStyle} from '@/middleware/cmd/mapStyles';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import {useMapStore} from '@/store/map';
 
 (MB as any).workerUrl = './worker.js';
 (MB as any).config.API_URL = '';
@@ -40,7 +41,10 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
     map.current = new Map({
       ...props,
       container: mapContainer.current!,
-      style: calculateMapStyle()
+      style: calculateMapStyle(),
+      projection: {
+        name: useMapStore.getState().projection
+      }
     });
 
     let destructor: void | (() => void);

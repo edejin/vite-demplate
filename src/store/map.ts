@@ -9,24 +9,33 @@ export enum MapStyles {
   Vector
 }
 
+export enum Projections {
+  Globe = 'globe',
+  Mercator = 'mercator'
+}
+
 export interface MapStore {
   map?: Map;
   setMap: (map?: Map) => void;
   style: MapStyles;
   setStyle: (style: MapStyles) => void;
+  projection: Projections;
+  setProjection: (projection: Projections) => void;
 }
 
 const store: StateCreator<MapStore> = (set/*, get*/) => ({
   setMap: (map?: Map) => set(() => ({map})),
   style: MapStyles.Vector,
-  setStyle: (style: MapStyles) => set({style})
+  setStyle: (style: MapStyles) => set({style}),
+  projection: Projections.Mercator,
+  setProjection: (projection: Projections) => set({projection})
 });
 
 export const useMapStore = applyMiddleware<MapStore>(store, [
   persistMiddlewareCreator({
     name: 'map',
     syncDynamically: true,
-    partialize: ({style}) => ({style})
+    partialize: ({style, projection}) => ({style, projection})
   }) as Middleware<MapStore>,
   mapMiddleware
 ]);

@@ -1,4 +1,4 @@
-import {MapStyles, useMapStore} from '@/store/map';
+import {MapStyles, Projections, useMapStore} from '@/store/map';
 import {MapComponent} from '@/components/MapComponent';
 import {useCallback} from 'react';
 import {Map} from 'mapbox-gl';
@@ -12,8 +12,10 @@ export const Page2 = () => {
   const {
     setMap,
     style,
-    setStyle
-  } = useMapStore(useSelector(['setMap', 'style', 'setStyle']));
+    setStyle,
+    projection,
+    setProjection
+  } = useMapStore(useSelector(['setMap', 'style', 'setStyle', 'projection', 'setProjection']));
   const callback = useCallback((m?: Map) => {
     setMap(m);
     return () => {
@@ -24,12 +26,21 @@ export const Page2 = () => {
   return (
     <>
       <Title level={5}>Page 2</Title>
-      <Space>
-        <Switch
-          checked={style === MapStyles.Satellite}
-          onChange={(v) => setStyle(v ? MapStyles.Satellite : MapStyles.Vector)}
-        />
-        <T z="Satellite or Vector"/>
+      <Space direction="vertical">
+        <Space>
+          <Switch
+            checked={style === MapStyles.Satellite}
+            onChange={(v) => setStyle(v ? MapStyles.Satellite : MapStyles.Vector)}
+          />
+          <T z="Satellite or Vector"/>
+        </Space>
+        <Space>
+          <Switch
+            checked={projection === Projections.Globe}
+            onChange={(v) => setProjection(v ? Projections.Globe : Projections.Mercator)}
+          />
+          <T z="Mercator or Globe"/>
+        </Space>
       </Space>
       <MapComponent callback={callback}/>
     </>
