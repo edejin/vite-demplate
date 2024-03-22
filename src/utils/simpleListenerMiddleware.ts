@@ -95,22 +95,24 @@ export const addSimpleListeners = <T, >(listeners: SimpleListenerDescriptor<T>[]
         remove.length === 0 &&
         empty.length === 0 &&
         add.length > 0 &&
-        (exist.length + add.length) === k.length &&
-        mount
+        (exist.length + add.length) === k.length
       ) {
         mounted = true;
-        mount(next);
+        if (mount) {
+          mount(next);
+        }
       }
       if (
         mounted &&
         add.length === 0 &&
         empty.length === 0 &&
         remove.length > 0 &&
-        (exist.length + remove.length) === k.length &&
-        unmount
+        (exist.length + remove.length) === k.length
       ) {
         mounted = false;
-        unmount(prev);
+        if (unmount) {
+          unmount(prev);
+        }
       }
       if (change.length && changeHandler) {
         changeHandler(prev, next, change, mounted);
