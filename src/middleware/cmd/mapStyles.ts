@@ -5,6 +5,7 @@ import darkMapStyle from '@/assets/map-styles/style-dark.json';
 import {Theme, useThemeStore} from '@/store/theme';
 import lightSatMapStyle from '@/assets/map-styles/style-sat-light.json';
 import darkSatMapStyle from '@/assets/map-styles/style-sat-dark.json';
+import {addGrid} from '@/components/MapGrid';
 
 export const calculateMapStyle = (): Style => {
   const {
@@ -53,4 +54,6 @@ export const changeMapStyle = () => {
     map
   } = useMapStore.getState();
   map?.setStyle(calculateMapStyle());
+
+  addGrid(map);
 };

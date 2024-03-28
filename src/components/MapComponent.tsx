@@ -9,6 +9,7 @@ import {calculateMapStyle} from '@/middleware/cmd/mapStyles';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {useMapStore} from '@/store/map';
 import {Minimap} from '@/components/Minimap';
+import {MapGrid} from '@/components/MapGrid';
 
 (MB as any).workerUrl = './worker.js';
 (MB as any).config.API_URL = '';
@@ -48,6 +49,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
       }
     });
 
+    map.current!.addControl(new MapGrid(), 'top-right');
     map.current!.addControl(new Minimap(), 'bottom-right');
 
     let destructor: void | (() => void);

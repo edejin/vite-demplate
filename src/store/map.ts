@@ -21,6 +21,8 @@ export interface MapStore {
   setStyle: (style: MapStyles) => void;
   projection: Projections;
   setProjection: (projection: Projections) => void;
+  showGrid: boolean;
+  setShowGrid: (showGrid: boolean) => void;
 }
 
 const store: StateCreator<MapStore> = (set/*, get*/) => ({
@@ -28,14 +30,16 @@ const store: StateCreator<MapStore> = (set/*, get*/) => ({
   style: MapStyles.Vector,
   setStyle: (style: MapStyles) => set({style}),
   projection: Projections.Mercator,
-  setProjection: (projection: Projections) => set({projection})
+  setProjection: (projection: Projections) => set({projection}),
+  showGrid: false,
+  setShowGrid: (showGrid: boolean) => set({showGrid})
 });
 
 export const useMapStore = applyMiddleware<MapStore>(store, [
   persistMiddlewareCreator({
     name: 'map',
     syncDynamically: true,
-    partialize: ({style, projection}) => ({style, projection})
+    partialize: ({style, projection, showGrid}) => ({style, projection, showGrid})
   }) as Middleware<MapStore>,
   mapMiddleware
 ]);
