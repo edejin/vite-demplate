@@ -77,7 +77,7 @@ export class Minimap {
         container,
         style: {
           ...initialStyle,
-          layers: initialStyle.layers.filter(e => !e.id.includes('graticule'))
+          layers: (initialStyle.layers ?? []).filter(e => !e.id.includes('graticule'))
         },
         projection: initialProjection
       });
@@ -148,7 +148,7 @@ export class Minimap {
           const t = map.getStyle();
           this.map.setStyle({
             ...t,
-            layers: t.layers.filter(e => !e.id.includes('graticule'))
+            layers: (t.layers ?? []).filter(e => !e.id.includes('graticule'))
           });
 
           await waitForStyles(this.map);
