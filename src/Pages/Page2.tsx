@@ -5,6 +5,8 @@ import {Map} from 'mapbox-gl';
 import {Space, Switch, Typography} from 'antd';
 import {T} from '@/components/Translate';
 import {useSelector} from '@/utils';
+import {MeasureToolbar} from '@/components/MeasureToolbar';
+import {PathAltitudeWidget} from '@/components/PathAltitudeWidget';
 
 const {Title} = Typography;
 
@@ -43,6 +45,8 @@ export const Page2 = () => {
         </Space>
       </Space>
       <MapComponent callback={callback}/>
+      <MeasureToolbar/>
+      <PathAltitudeWidget style={{position: 'fixed', top: 20, left: 20}}/>
     </>
   );
 };
