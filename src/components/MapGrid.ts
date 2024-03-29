@@ -80,7 +80,7 @@ export const addGrid = (map?: Map) => {
     paint: {
       "line-width": 1,
       "line-color": "rgb(0,0,0)"
-    },
+    }
   });
   map.addLayer({
     id: 'graticule-caption',
@@ -96,13 +96,16 @@ export const addGrid = (map?: Map) => {
       'text-rotation-alignment': 'map',
       'symbol-placement': 'line'
     },
-    paint: {
-      'text-color': '#334',
-      'text-halo-blur': 1,
-      'text-halo-color': 'rgba(255,255,255,0.8)',
-      'text-halo-width': 0.8
+    'paint': {
+      'text-color': '#000000',
+      "text-opacity": 1,
+      "text-opacity-transition": {
+        "duration": 0
+      },
+      'text-halo-color': "#ffffff",
+      'text-halo-width': 2
     }
-  })
+  });
 };
 
 export class MapGrid {
