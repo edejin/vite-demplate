@@ -6,7 +6,7 @@ import {
   EventData,
   GeoJSONSource,
   SymbolLayer,
-  MapTouchEvent
+  MapTouchEvent, LineLayer
 } from 'mapbox-gl';
 import {DCircle, DPoint, DPolygon} from 'dgeoutils';
 import {useMapStore} from '@/store/map';
@@ -14,7 +14,7 @@ import {Button, Space} from 'antd';
 import {cancelableFetch} from '@/utils';
 import {RespData, useMeasureStore} from '@/store/measure';
 import {createGlobalStyle} from 'styled-components';
-import type {FeatureCollection, Geometry} from 'GeoJSON';
+import type {FeatureCollection, Geometry} from 'geojson';
 
 const GlobalStyles = createGlobalStyle`
   .no-cursor .mapboxgl-canvas {
@@ -82,7 +82,7 @@ const addLayer = (map: Map | undefined, props: AnyLayer) => {
     map?.addLayer({
       ...props,
       id: LAYERS_AND_SOURCE_PREFIX + props.id,
-      source: LAYERS_AND_SOURCE_PREFIX + props.source
+      source: LAYERS_AND_SOURCE_PREFIX + (props as LineLayer).source
     } as AnyLayer);
   }
 };
@@ -429,8 +429,7 @@ Lat: ${y}`
         }
         const {
           fullLength: radius,
-          first,
-          last
+          first
         } = p
           .clone()
           .loop()
@@ -940,13 +939,13 @@ Lat: ${y}`
           const target = directionAltPolygons.current[directionAltPolygons.current.length - 1].clone();
           target.pop();
           useMeasureStore.getState().setAltData([]);
-          cancelableFetch<RespData[]>('http://localhost:8088/?type=api&api=pathAlt', {
+          cancelableFetch('http://localhost:8088/?type=api&api=pathAlt', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
               path: target.toGeoJSONFeature()
             })
-          }).then(e => e.json()).then((d) => {
+          }).then(e => e.json()).then((d: RespData[]) => {
             useMeasureStore.getState().setAltData(d);
           });
 

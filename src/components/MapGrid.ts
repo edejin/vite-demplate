@@ -109,10 +109,10 @@ export const addGrid = (map?: Map) => {
 };
 
 export class MapGrid {
-  private unsubscribe: () => void;
+  private unsubscribe?: () => void;
 
   onAdd(map: Map) {
-    ;(0, async () => {
+    ;(async () => {
       await waitForStyles(map);
       addGrid(map);
       const moveHandler = () => {
@@ -144,6 +144,6 @@ export class MapGrid {
   }
 
   onRemove() {
-    this.unsubscribe();
+    this.unsubscribe!();
   }
 }

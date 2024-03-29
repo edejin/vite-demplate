@@ -14,7 +14,6 @@ import {CustomizedAxisTick} from './CustomizedAxisTick';
 import {CustomTooltip} from './CustomTooltip';
 import {useMeasureStore} from '@/store/measure';
 import {Divider, Space, Typography} from 'antd';
-import {useLogging} from '@/utils/customHooks';
 
 const {
   Title,

@@ -36,10 +36,10 @@ const store: StateCreator<MapStore> = (set/*, get*/) => ({
 });
 
 export const useMapStore = applyMiddleware<MapStore>(store, [
-  persistMiddlewareCreator({
+  persistMiddlewareCreator<MapStore>({
     name: 'map',
     syncDynamically: true,
-    partialize: ({style, projection, showGrid}) => ({style, projection, showGrid})
+    partialize: ({style, projection, showGrid}) => ({style, projection, showGrid} as MapStore)
   }) as Middleware<MapStore>,
   mapMiddleware
 ]);

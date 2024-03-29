@@ -1,6 +1,6 @@
-import {GeoJSONSource, Map} from 'mapbox-gl';
+import {GeoJSONSource, Map, MapboxEvent, Sources} from 'mapbox-gl';
 import {sleep} from '@/utils';
-import {Position} from 'geojson';
+import type {Position} from 'geojson';
 import {waitForStyles} from '@/utils/map';
 
 const addData = (src: Map, target: Map, c?: Position[][]) => {
@@ -8,7 +8,7 @@ const addData = (src: Map, target: Map, c?: Position[][]) => {
   if (!c) {
     [[lon1, lat1], [lon2, lat2]] = src.getBounds().toArray();
   }
-  const coordinates = c ?? [
+  const coordinates = (c ?? [
     [
       [lon1, lat1],
       [lon1, lat2],
@@ -16,7 +16,7 @@ const addData = (src: Map, target: Map, c?: Position[][]) => {
       [lon2, lat1],
       [lon1, lat1]
     ]
-  ];
+  ]) as Position[][];
   target.addSource('target-json', {
     type: 'geojson',
     data: {
@@ -53,7 +53,7 @@ const getStyleKey = (map?: Map): string => {
 
   return JSON.stringify({
     ...styles,
-    sources: Object.keys(styles?.sources ?? {}).reduce((a, k) => {
+    sources: Object.keys(styles?.sources ?? {}).reduce((a: Sources, k) => {
       if (!k.includes('graticule') && !k.includes('measure-tools-')) {
         a[k] = (styles?.sources ?? {})[k];
       }
@@ -64,10 +64,10 @@ const getStyleKey = (map?: Map): string => {
 };
 
 export class Minimap {
-  private unsubscribe: () => void;
-  private map: Map;
+  private unsubscribe?: () => void;
+  private map?: Map;
 
-  onAdd(map) {
+  onAdd(map: Map) {
     const div = document.createElement("div");
     div.className = "mapboxgl-ctrl mapboxgl-ctrl-group";
     div.style.pointerEvents = 'none';
@@ -77,9 +77,9 @@ export class Minimap {
     container.style.height = '200px';
     div.appendChild(container);
 
-    let coordinates;
+    let coordinates: undefined | Position[][];
 
-    ;(0, async () => {
+    ;(async () => {
       await waitForStyles(map);
 
       const initialStyle = map.getStyle();
@@ -108,8 +108,8 @@ export class Minimap {
         }
       );
 
-      const move = (e) => {
-        const tSource = this.map.getSource('target-json') as GeoJSONSource;
+      const move = (e: MapboxEvent<MouseEvent | TouchEvent | WheelEvent | undefined>) => {
+        const tSource = this.map?.getSource('target-json') as GeoJSONSource;
         if (tSource) {
           const [[lon1, lat1], [lon2, lat2]] = e.target.getBounds().toArray();
           coordinates = [
@@ -135,7 +135,7 @@ export class Minimap {
             ]
           });
         }
-        this.map.fitBounds(
+        this.map?.fitBounds(
           e.target.getBounds(),
           {
             animate: false,

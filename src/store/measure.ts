@@ -40,7 +40,7 @@ export interface Measure {
   }) => void;
 }
 
-const store: StateCreator<Measure> = (set, get) => ({
+const store: StateCreator<Measure> = (set) => ({
   setDistanceValue: (distanceValue?: number) => set({distanceValue}),
   altData: [],
   setAltData: (altData: RespData[] = []) => set({altData}),

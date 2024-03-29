@@ -46,7 +46,7 @@ export const calculateMapStyle = (): Style => {
   if (resultTheme.sprite) {
     resultTheme.sprite = resultTheme.sprite.replaceAll('__REPLACE_ME__', path);
   }
-  return resultTheme;
+  return resultTheme as Style;
 };
 
 export const changeMapStyle = () => {
