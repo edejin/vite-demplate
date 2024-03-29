@@ -7,6 +7,7 @@ import {T} from '@/components/Translate';
 import {useSelector} from '@/utils';
 import {MeasureToolbar} from '@/components/MeasureToolbar';
 import {PathAltitudeWidget} from '@/components/PathAltitudeWidget';
+import {MouseData} from '@/components/MouseData';
 
 const {Title} = Typography;
 
@@ -45,6 +46,7 @@ export const Page2 = () => {
         </Space>
       </Space>
       <MapComponent callback={callback}/>
+      <MouseData/>
       <MeasureToolbar/>
       <PathAltitudeWidget style={{position: 'fixed', top: 20, left: 20}}/>
     </>
