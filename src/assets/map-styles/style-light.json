@@ -6,6 +6,14 @@
     "openmaptiles": {
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
       "type": "vector"
+    },
+    "raster-dem": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+      ],
+      "tileSize": 512,
+      "maxzoom": 14
     }
   },
   "layers": [

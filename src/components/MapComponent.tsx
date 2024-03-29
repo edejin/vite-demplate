@@ -54,6 +54,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
 
     let destructor: void | (() => void);
     map.current!.once('style.load', () => {
+      map.current!.setTerrain({'source': 'raster-dem', 'exaggeration': 1.0});
       if (callback) {
         destructor = callback(map.current);
       }

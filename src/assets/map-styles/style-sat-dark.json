@@ -12,6 +12,14 @@
       "tileSize": 256,
       "type": "raster",
       "maxzoom": 19
+    },
+    "raster-dem": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+      ],
+      "tileSize": 512,
+      "maxzoom": 14
     }
   },
   "layers": [

@@ -6,6 +6,7 @@ import {Theme, useThemeStore} from '@/store/theme';
 import lightSatMapStyle from '@/assets/map-styles/style-sat-light.json';
 import darkSatMapStyle from '@/assets/map-styles/style-sat-dark.json';
 import {addGrid} from '@/components/MapGrid';
+import {waitForStyles} from '@/utils/map';
 
 export const calculateMapStyle = (): Style => {
   const {
@@ -56,4 +57,9 @@ export const changeMapStyle = () => {
   map?.setStyle(calculateMapStyle());
 
   addGrid(map);
+
+  ;(async () => {
+    await waitForStyles(map);
+    map?.setTerrain({'source': 'raster-dem', 'exaggeration': 1.0});
+  })();
 };
