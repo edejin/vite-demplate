@@ -46,7 +46,22 @@ const addData = (src: Map, target: Map, c?: Position[][]) => {
     }
   });
   return coordinates;
-}
+};
+
+const getStyleKey = (map?: Map): string => {
+  const styles = map?.getStyle();
+
+  return JSON.stringify({
+    ...styles,
+    sources: Object.keys(styles?.sources ?? {}).reduce((a, k) => {
+      if (!k.includes('graticule') && !k.includes('measure-tools-')) {
+        a[k] = (styles?.sources ?? {})[k];
+      }
+      return a;
+    }, {}),
+    layers: (styles?.layers ?? []).filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
+  });
+};
 
 export class Minimap {
   private unsubscribe: () => void;
@@ -70,14 +85,14 @@ export class Minimap {
       const initialStyle = map.getStyle();
       const initialProjection = map.getProjection();
 
-      let currentStyleKey = JSON.stringify(initialStyle);
+      let currentStyleKey = getStyleKey(map);
       let currentProjectionKey = JSON.stringify(initialProjection);
 
       this.map = new Map({
         container,
         style: {
           ...initialStyle,
-          layers: (initialStyle?.layers ?? []).filter(e => !e.id.includes('graticule'))
+          layers: (initialStyle?.layers ?? []).filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
         },
         projection: initialProjection
       });
@@ -141,14 +156,13 @@ export class Minimap {
         await waitForStyles(map);
         await sleep();
 
-
-        const tStyle = JSON.stringify(map.getStyle());
+        const tStyle = getStyleKey(map);
         if (currentStyleKey !== tStyle) {
           currentStyleKey = tStyle;
           const t = map.getStyle();
           this.map.setStyle({
             ...t,
-            layers: (t?.layers ?? []).filter(e => !e.id.includes('graticule'))
+            layers: (t?.layers ?? []).filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
           });
 
           await waitForStyles(this.map);
