@@ -15,7 +15,7 @@ import {MapGrid} from '@/components/MapGrid';
 (MB as any).config.API_URL = '';
 
 const MapElement = styled.div`
-  width: 500px;
+  width: 1000px;
   height: 500px;
   position: relative;
 `;
