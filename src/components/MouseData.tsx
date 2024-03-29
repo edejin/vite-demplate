@@ -2,6 +2,7 @@ import React, {CSSProperties, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {useMapStore} from '@/store/map';
 import {Space, Typography} from 'antd';
+import {MapMouseEvent} from 'mapbox-gl';
 
 const {Text} = Typography;
 
@@ -10,7 +11,7 @@ const Wrapper = styled.div``;
 interface GeoData {
   lng?: number;
   lat?: number;
-  alt?: number; // meters from water level
+  alt?: null | number; // meters from water level
 }
 
 interface Props {
@@ -29,7 +30,7 @@ export const MouseData: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (map) {
-      const f = (e) => {
+      const f = (e: MapMouseEvent) => {
         setData({
           lng: e.lngLat.lng,
           lat: e.lngLat.lat,
