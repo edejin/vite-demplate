@@ -118,6 +118,13 @@ export function useDeepSelector<S extends object, P extends keyof S>(paths: stri
   };
 }
 
+/**
+ * Download file from front-end.
+ * If text file should support Arabic (e.g., `csv`, `txt`) than you should start it from '\ufeff' (to support UTF-8 with BOM)
+ * @param fileName
+ * @param type Content type
+ * @param byte Typed array or string
+ */
 export const downloadFile = (fileName: string, type: string, byte: any) => {
   const blob = new Blob([byte], {type});
   const link = document.createElement('a');
