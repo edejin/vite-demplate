@@ -154,12 +154,14 @@ Lat: ${y}`
             .degreeToMeters()
             .run();
 
-          useMeasureStore.getState().setDistanceValue(k.fullLength);
+          useMeasureStore.getState().setDistanceValue(v.fullLengthLatLon);
 
           for (let i = 1; i < k.length; i++) {
             const p1 = k.at(i - 1).clone();
             const p2 = k.at(i).clone();
-            const distance = p1.distance(p2);
+            const p1v = v.at(i - 1).clone();
+            const p2v = v.at(i).clone();
+            const distance = p1v.distanceLatLon(p2v);
             const center = p1
               .move(
                 p2
@@ -180,7 +182,7 @@ Lat: ${y}`
                 .last
                 .clone()
                 .setProperties({
-                  value: `Full length: ${formatLength(k.fullLength)}`
+                  value: `Full length: ${formatLength(v.fullLengthLatLon)}`
                 })
                 .toGeoJSONFeature()
             );
@@ -295,7 +297,10 @@ Lat: ${y}`
           return a;
         }
         const {
-          fullLength: radius,
+          fullLengthLatLon: radius,
+          first: center
+        } = p;
+        const {
           first,
           last
         } = p
@@ -305,13 +310,10 @@ Lat: ${y}`
           .run();
         const fi = (first.findLine(last).getFi() / Math.PI * 180 + 90) % 360;
         const mPoly =
-          new DCircle(first, radius)
-            .findPolygonInside();
+          new DCircle(center, radius)
+            .findPolygonInsideOnSphere();
         a.push(
           mPoly
-            .loop()
-            .metersToDegree()
-            .run()
             .toGeoJSONFeature(),
           p
             .first
