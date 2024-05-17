@@ -54,8 +54,7 @@ export const useCustomId = (id?: string) => {
   return id ?? useId();
 };
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-export const isDef = (e: any): boolean => e != undefined;
+export const isDef = (e: any): boolean => typeof e !== 'undefined' && e !== null;
 
 type Pick<T, K extends keyof T> = {
   [P in K]: T[P];
@@ -63,9 +62,9 @@ type Pick<T, K extends keyof T> = {
 
 type Many<T> = T | readonly T[];
 
-const deepPick = <S, >(state: S, path: string | string[]): Partial<S> => (
-  Array.isArray(path) ? path : [path]
-).reduce((a: Partial<S>, keys) => {
+export const alwaysArray = <Y, >(args: Many<Y>): Y[] => Array.isArray(args) ? args : [<Y>args];
+
+const deepPick = <S, >(state: S, path: string | string[]): Partial<S> => alwaysArray<string>(path).reduce((a: Partial<S>, keys) => {
   let u: any = a;
   let y: any = state;
 
@@ -86,7 +85,7 @@ const deepPick = <S, >(state: S, path: string | string[]): Partial<S> => (
   return a;
 }, {}) as Partial<S>;
 
-const pick = <S, >(state: S, path: Many<keyof S>) => ((Array.isArray(path) ? path : [path]) as (keyof S)[]).reduce((res: S, path: keyof S) => {
+const pick = <S, >(state: S, path: Many<keyof S>) => alwaysArray<keyof S>(path).reduce((res: S, path: keyof S) => {
   res[path] = state[path];
   return res;
 }, {} as S);

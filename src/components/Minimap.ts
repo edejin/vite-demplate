@@ -159,10 +159,10 @@ export class Minimap {
         const tStyle = getStyleKey(map);
         if (currentStyleKey !== tStyle) {
           currentStyleKey = tStyle;
-          const t = map.getStyle();
+          const {version, sources, ...t} = map.getStyle();
           this.map.setStyle({
-            version: 8,
-            sources: {},
+            version: version ?? 8,
+            sources: sources ?? {},
             ...t,
             layers: (t?.layers ?? []).filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
           });

@@ -1,4 +1,4 @@
-import {isDef, warn} from '@/utils/index';
+import {alwaysArray, isDef, warn} from '@/utils/index';
 import {Middleware} from '@/utils/zustand';
 
 interface SimpleListenerDescriptor<T> {
@@ -56,7 +56,7 @@ export const addSimpleListeners = <T, >(listeners: SimpleListenerDescriptor<T>[]
       let {
         mounted = false
       } = listener;
-      const k: (keyof T)[] = Array.isArray(key) ? key : [key];
+      const k = alwaysArray<keyof T>(key);
 
       const [
         add,
