@@ -9,8 +9,8 @@ export const useLogging = (text: string, ...arg: any[]) => {
 
 export const useScreenSize = (wD: number = 0, hD: number = 0) => {
   const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth + wD,
+    height: window.innerHeight + hD,
   });
 
   useEffect(() => {
