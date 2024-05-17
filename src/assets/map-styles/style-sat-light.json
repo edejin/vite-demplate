@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "id": "streets",
+  "id": "sat-streets",
   "name": "Satellite Streets",
   "sources": {
     "openmaptiles": {

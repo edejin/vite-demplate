@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "id": "dark-matter",
+  "id": "sat-dark-matter",
   "name": "Satellite Dark Matter",
   "sources": {
     "openmaptiles": {
