@@ -6,7 +6,8 @@ import {
   EventData,
   GeoJSONSource,
   SymbolLayer,
-  MapTouchEvent, LineLayer
+  MapTouchEvent,
+  LineLayer
 } from 'mapbox-gl';
 import {DCircle, DPoint, DPolygon} from 'dgeoutils';
 import {useMapStore} from '@/store/map';
@@ -14,7 +15,7 @@ import {Button, Space} from 'antd';
 import {cancelableFetch} from '@/utils';
 import {RespData, useMeasureStore} from '@/store/measure';
 import {createGlobalStyle} from 'styled-components';
-import type {FeatureCollection, Geometry} from 'geojson';
+import type {FeatureCollection, Geometry, Feature} from 'geojson';
 
 const GlobalStyles = createGlobalStyle`
   .no-cursor .mapboxgl-canvas {
@@ -143,8 +144,8 @@ Lat: ${y}`
       features: [
         ...distanceLines.current.map((e) => e.clone().removeDuplicates()).map((l) => {
           return l.length ? l.toGeoJSONFeature() : undefined;
-        }).filter(r => r) as GeoJSON.Feature[],
-        ...distanceLines.current.map((e) => e.clone().removeDuplicates()).reduce((a: GeoJSON.Feature[], v) => {
+        }).filter(r => r) as Feature[],
+        ...distanceLines.current.map((e) => e.clone().removeDuplicates()).reduce((a: Feature[], v) => {
           if (v.length < 2) {
             return a;
           }
@@ -200,7 +201,7 @@ Lat: ${y}`
       map?.getContainer().classList.remove('no-cursor');
     }
     const features = [
-      ...areaPolygons.current.reduce((a: GeoJSON.Feature[], l) => {
+      ...areaPolygons.current.reduce((a: Feature[], l) => {
         const key = l.toString();
         if (calculationCache.current[key]) {
           a.push(...calculationCache.current[key]);
@@ -221,7 +222,7 @@ Lat: ${y}`
         }
         return a;
       }, []),
-      ...areaPolygons.current.reduce((a: GeoJSON.Feature[], p) => {
+      ...areaPolygons.current.reduce((a: Feature[], p) => {
         const key = p.toString();
         if (calculationCache2.current[key]) {
           a.push(calculationCache2.current[key]);
@@ -291,8 +292,8 @@ Lat: ${y}`
     const features = [
       ...directionPolygons.current.map(l => {
         return l.length ? l.toGeoJSONFeature() : undefined;
-      }).filter(r => r) as GeoJSON.Feature[],
-      ...directionPolygons.current.reduce((a: GeoJSON.Feature[], p) => {
+      }).filter(r => r) as Feature[],
+      ...directionPolygons.current.reduce((a: Feature[], p) => {
         if (p.length < 2) {
           return a;
         }
@@ -425,7 +426,7 @@ Lat: ${y}`
       // ...directionAreaVisPolygons.current.map(l => {
       //   return l.length ? l.toGeoJSONFeature() : undefined;
       // }).filter(r => r) as GeoJSON.Feature[],
-      ...directionAreaVisPolygons.current.reduce((a: GeoJSON.Feature[], p) => {
+      ...directionAreaVisPolygons.current.reduce((a: Feature[], p) => {
         if (p.length < 2) {
           return a;
         }
@@ -488,8 +489,8 @@ Lat: ${y}`
     const features = [
       ...directionAltPolygons.current.map(l => {
         return l.length ? l.toGeoJSONFeature() : undefined;
-      }).filter(r => r) as GeoJSON.Feature[],
-      ...directionAltPolygons.current.reduce((a: GeoJSON.Feature[], p) => {
+      }).filter(r => r) as Feature[],
+      ...directionAltPolygons.current.reduce((a: Feature[], p) => {
         if (p.length < 2) {
           return a;
         }
@@ -1114,51 +1115,75 @@ Lat: ${y}`
   }, [map, currentTool]);
 
   useEffect(() => {
-    map?.on('touchstart', mapTouchStartHandler);
+    if (map) {
+      map.on('touchstart', mapTouchStartHandler);
 
-    return () => {
-      map?.off('touchstart', mapTouchStartHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('touchstart', mapTouchStartHandler);
+        }
+      };
+    }
   }, [map, mapTouchStartHandler]);
 
   useEffect(() => {
-    map?.on('touchend', mapTouchEndHandler);
+    if (map) {
+      map.on('touchend', mapTouchEndHandler);
 
-    return () => {
-      map?.off('touchend', mapTouchEndHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('touchend', mapTouchEndHandler);
+        }
+      };
+    }
   }, [map, mapTouchEndHandler]);
 
   useEffect(() => {
-    map?.on('touchmove', mapTouchMoveHandler);
+    if (map) {
+      map.on('touchmove', mapTouchMoveHandler);
 
-    return () => {
-      map?.off('touchmove', mapTouchMoveHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('touchmove', mapTouchMoveHandler);
+        }
+      };
+    }
   }, [map, mapTouchMoveHandler]);
 
   useEffect(() => {
-    map?.on('click', mapClickHandler);
+    if (map) {
+      map.on('click', mapClickHandler);
 
-    return () => {
-      map?.off('click', mapClickHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('click', mapClickHandler);
+        }
+      };
+    }
   }, [map, mapClickHandler]);
 
   useEffect(() => {
-    map?.on('mousemove', mapMoveHandler);
+    if (map) {
+      map.on('mousemove', mapMoveHandler);
 
-    return () => {
-      map?.off('mousemove', mapMoveHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('mousemove', mapMoveHandler);
+        }
+      };
+    }
   }, [map, mapMoveHandler]);
 
   useEffect(() => {
-    map?.on('dblclick', mapDblClickHandler);
+    if (map) {
+      map.on('dblclick', mapDblClickHandler);
 
-    return () => {
-      map?.off('dblclick', mapDblClickHandler);
-    };
+      return () => {
+        if (map) {
+          map.off('dblclick', mapDblClickHandler);
+        }
+      };
+    }
   }, [map, mapDblClickHandler]);
 
   const tools: {

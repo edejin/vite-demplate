@@ -199,10 +199,14 @@ const persistImpl: PersistImpl = (config, baseOptions) => (set, get, api) => {
       })
       .catch((e) => {
         errorInSync = e;
-        postUpdateCallback?.(undefined, e);
+        if (postUpdateCallback) {
+          postUpdateCallback(undefined, e);
+        }
       })
       .then(() => {
-        postUpdateCallback?.(stateFromStorage, undefined);
+        if (postUpdateCallback) {
+          postUpdateCallback(stateFromStorage, undefined);
+        }
         if (options.syncDynamically) {
           const currentVersion = Number(localStorage.getItem(options.syncKeyName) || '0');
           localStorage.setItem(options.syncKeyName, (currentVersion + 1).toString());
@@ -282,12 +286,16 @@ const persistImpl: PersistImpl = (config, baseOptions) => (set, get, api) => {
           // return setItem()
         })
         .then(() => {
-          postRehydrationCallback?.(stateFromStorage, undefined);
+          if (postRehydrationCallback) {
+            postRehydrationCallback?.(stateFromStorage, undefined);
+          }
           hasHydrated = true;
           finishHydrationListeners.forEach((cb) => cb(stateFromStorage as S));
         })
         .catch((e: Error) => {
-          postRehydrationCallback?.(undefined, e);
+          if (postRehydrationCallback) {
+            postRehydrationCallback(undefined, e);
+          }
         });
     }
 

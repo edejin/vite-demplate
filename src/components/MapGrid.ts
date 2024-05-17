@@ -1,5 +1,5 @@
 import {GeoJSONSource, Map} from 'mapbox-gl';
-import {FeatureCollection, Geometry} from 'geojson';
+import {FeatureCollection, LineString} from 'geojson';
 import {toDegreesMinutesSeconds} from 'dgeoutils/dist/cjs/utils';
 import {waitForStyles} from '@/utils/map';
 import {useMapStore} from '@/store/map';
@@ -10,7 +10,7 @@ export const addGrid = (map?: Map) => {
     return;
   }
 
-  const graticule: FeatureCollection<Geometry> = {
+  const graticule: FeatureCollection<LineString> = {
     type: 'FeatureCollection',
     features: []
   };

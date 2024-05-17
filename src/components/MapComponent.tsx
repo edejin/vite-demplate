@@ -33,7 +33,7 @@ export const MapComponent: React.FC<Props> = (option: Props) => {
     style: cssStyle,
     ...props
   } = option;
-  const mapContainer = useRef<HTMLDivElement>(null);
+  const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<Map>();
 
   useEffect(() => {
