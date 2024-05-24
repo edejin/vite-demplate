@@ -423,9 +423,6 @@ Lat: ${y}`
     }
 
     const features = [
-      // ...directionAreaVisPolygons.current.map(l => {
-      //   return l.length ? l.toGeoJSONFeature() : undefined;
-      // }).filter(r => r) as GeoJSON.Feature[],
       ...directionAreaVisPolygons.current.reduce((a: Feature[], p) => {
         if (p.length < 2) {
           return a;
@@ -438,7 +435,6 @@ Lat: ${y}`
           .loop()
           .degreeToMeters()
           .run();
-        // const fi = (first.findLine(last).getFi() / Math.PI * 180 + 90) % 360;
         const mPoly =
           new DCircle(first, radius)
             .findPolygonInside();
@@ -448,27 +444,6 @@ Lat: ${y}`
             .metersToDegree()
             .run()
             .toGeoJSONFeature()
-          // p
-          //   .first
-          //   .clone()
-          //   .setProperties({
-          //     value: `Area: ${formatArea(Math.PI * radius * radius)}`
-          //   })
-          //   .toGeoJSONFeature(),
-          // p
-          //   .last
-          //   .clone()
-          //   .setProperties({
-          //     value: `Direction: ${fi.toFixed(2)}°`
-          //   })
-          //   .toGeoJSONFeature(),
-          // p
-          //   .center
-          //   .clone()
-          //   .setProperties({
-          //     value: `Radius: ${formatLength(radius)}`
-          //   })
-          //   .toGeoJSONFeature()
         );
 
         return a;
@@ -496,37 +471,12 @@ Lat: ${y}`
         }
         const {
           fullLength: radius
-          // first,
-          // last
         } = p
           .clone()
           .loop()
           .degreeToMeters()
           .run();
-        // const fi = (first.findLine(last).getFi() / Math.PI * 180 + 90) % 360;
-        // const mPoly =
-        //   new DCircle(first, radius)
-        //     .findPolygonInside();
         a.push(
-          // mPoly
-          //   .loop()
-          //   .metersToDegree()
-          //   .run()
-          //   .toGeoJSONFeature(),
-          // p
-          //   .first
-          //   .clone()
-          //   .setProperties({
-          //     value: `Area: ${formatArea(Math.PI * radius * radius)}`
-          //   })
-          //   .toGeoJSONFeature(),
-          // p
-          //   .last
-          //   .clone()
-          //   .setProperties({
-          //     value: `Direction: ${fi.toFixed(2)}°`
-          //   })
-          //   .toGeoJSONFeature(),
           p
             .center
             .clone()
@@ -585,7 +535,6 @@ Lat: ${y}`
 
     switch (currentTool) {
       case ToolTypes.None:
-        // (window as any).disableDirection = false;
         removeLayer(map, 'distance-polygon');
         removeLayer(map, 'distance-polygon-points');
         removeSource(map, 'distance-polygon');
@@ -602,7 +551,6 @@ Lat: ${y}`
 
         removeLayer(map, 'direction-area-vis-polygon-lines');
         removeLayer(map, 'direction-area-vis-polygon-points');
-        // removeLayer(map, 'direction-area-vis-polygon');
         removeSource(map, 'direction-area-vis-polygon');
         removeLayer(map, 'direction-area-vis-raster');
         removeSource(map, 'direction-area-vis-raster');
@@ -627,7 +575,6 @@ Lat: ${y}`
         map?.doubleClickZoom.enable();
         break;
       case ToolTypes.Line:
-        // (window as any).disableDirection = true;
         map?.doubleClickZoom.disable();
         addSource(map, 'distance-polygon', {
           type: "geojson",
@@ -664,7 +611,6 @@ Lat: ${y}`
         });
         break;
       case ToolTypes.Area:
-        // (window as any).disableDirection = true;
         map?.doubleClickZoom.disable();
         addSource(map, 'area-polygon', {
           type: "geojson",
@@ -676,10 +622,10 @@ Lat: ${y}`
         addLayer(map, {
           'id': 'area-polygon',
           'type': 'fill',
-          'source': 'area-polygon', // reference the data source
+          'source': 'area-polygon',
           'layout': {},
           'paint': {
-            'fill-color': '#FF511A', // blue color fill
+            'fill-color': '#FF511A',
             'fill-opacity': 0.2
           },
           "filter": [
@@ -711,7 +657,6 @@ Lat: ${y}`
         });
         break;
       case ToolTypes.Circle:
-        // (window as any).disableDirection = true;
         map?.doubleClickZoom.disable();
         addSource(map, 'direction-polygon', {
           type: "geojson",
@@ -723,10 +668,10 @@ Lat: ${y}`
         addLayer(map, {
           'id': 'direction-polygon',
           'type': 'fill',
-          'source': 'direction-polygon', // reference the data source
+          'source': 'direction-polygon',
           'layout': {},
           'paint': {
-            'fill-color': '#F6FA35', // blue color fill
+            'fill-color': '#F6FA35',
             'fill-opacity': 0.2
           },
           "filter": [
@@ -758,7 +703,6 @@ Lat: ${y}`
         });
         break;
       case ToolTypes.CircleAlt:
-        // (window as any).disableDirection = true;
         map?.doubleClickZoom.disable();
         addSource(map, 'direction-area-vis-polygon', {
           type: "geojson",
@@ -767,21 +711,6 @@ Lat: ${y}`
             "features": []
           }
         });
-        // addLayer(map, {
-        //   'id': 'direction-area-vis-polygon',
-        //   'type': 'fill',
-        //   'source': 'direction-area-vis-polygon', // reference the data source
-        //   'layout': {},
-        //   'paint': {
-        //     'fill-color': '#ffc100', // blue color fill
-        //     'fill-opacity': 0.2
-        //   },
-        //   "filter": [
-        //     "==",
-        //     "$type",
-        //     "Polygon"
-        //   ]
-        // });
         addLayer(map, {
           id: "direction-area-vis-polygon-lines",
           'type': 'line',
@@ -805,7 +734,6 @@ Lat: ${y}`
         });
         break;
       case ToolTypes.AltitudeLine:
-        // (window as any).disableDirection = true;
         map?.doubleClickZoom.disable();
         addSource(map, 'direction-alt-polygon', {
           type: "geojson",
@@ -817,10 +745,10 @@ Lat: ${y}`
         addLayer(map, {
           'id': 'direction-alt-polygon',
           'type': 'fill',
-          'source': 'direction-alt-polygon', // reference the data source
+          'source': 'direction-alt-polygon',
           'layout': {},
           'paint': {
-            'fill-color': '#ffc100', // blue color fill
+            'fill-color': '#ffc100',
             'fill-opacity': 0.2
           },
           "filter": [
@@ -852,7 +780,6 @@ Lat: ${y}`
         });
         break;
       case ToolTypes.Point:
-        // (window as any).disableDirection = true;
         addSource(map, 'points', {
           type: "geojson",
           data: {
@@ -912,7 +839,6 @@ Lat: ${y}`
           while (directionPolygons.current[directionPolygons.current.length - 1].length > 3) {
             directionPolygons.current[directionPolygons.current.length - 1].pop();
           }
-          // directionPolygons.current[directionPolygons.current.length - 1].pop();
           directionPolygons.current.push(new DPolygon());
         }
         updateDirectionGeometries();
@@ -923,7 +849,6 @@ Lat: ${y}`
           while (directionAreaVisPolygons.current[directionAreaVisPolygons.current.length - 1].length > 3) {
             directionAreaVisPolygons.current[directionAreaVisPolygons.current.length - 1].pop();
           }
-          // directionAreaVisPolygons.current[directionAreaVisPolygons.current.length - 1].pop();
           directionAreaVisPolygons.current.push(new DPolygon());
         }
         if (directionAreaVisPolygons.current.length > 2) {
