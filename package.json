@@ -10,19 +10,19 @@
   },
   "dependencies": {
     "@types/mapbox-gl": "^3.1.0",
-    "antd": "^5.17.2",
+    "antd": "^5.19.0",
     "dgeoutils": "^2.5.0",
     "map-fonts": "https://dej.in.ua/map-fonts-1.0.0.tgz",
-    "mapbox-gl": "^3.3.0",
+    "mapbox-gl": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-intl": "^6.6.6",
-    "react-router-dom": "^6.23.1",
+    "react-intl": "^6.6.8",
+    "react-router-dom": "^6.24.1",
     "recharts": "^2.12.7",
     "styled-components": "^6.1.11",
     "stylis": "^4.3.2",
     "stylis-plugin-rtl": "^2.1.1",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.4"
   },
   "eslintConfig": {
     "extends": [
@@ -31,16 +31,16 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
-    "@types/react": "^18.3.2",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.1",
     "babel-plugin-styled-components": "^2.1.4",
-    "javascript-obfuscator": "^4.1.0",
+    "javascript-obfuscator": "^4.1.1",
     "rollup-obfuscator": "^4.1.1",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11",
-    "vite-plugin-static-copy": "^1.0.4",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3",
+    "vite-plugin-static-copy": "^1.0.6",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.2"
   }

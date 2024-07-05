@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Map,
-  AnyLayer,
-  AnySourceData,
-  EventData,
+  LayerSpecification,
+  SourceSpecification,
   GeoJSONSource,
-  SymbolLayer,
+  SymbolLayerSpecification,
   MapTouchEvent,
-  LineLayer
+  LineLayerSpecification,
+  MapMouseEvent
 } from 'mapbox-gl';
 import {DCircle, DPoint, DPolygon} from 'dgeoutils';
 import {useMapStore} from '@/store/map';
@@ -33,7 +33,7 @@ enum ToolTypes {
   CircleAlt
 }
 
-const textStyles: Partial<SymbolLayer> = {
+const textStyles: Partial<SymbolLayerSpecification> = {
   'layout': {
     "text-font": [
       "Roboto Regular"
@@ -73,18 +73,18 @@ const removeLayer = (map: Map | undefined, id: string) => {
     map?.removeLayer(LAYERS_AND_SOURCE_PREFIX + id);
   }
 };
-const addSource = (map: Map | undefined, id: string, props: AnySourceData) => {
+const addSource = (map: Map | undefined, id: string, props: SourceSpecification) => {
   if (!map?.getSource(LAYERS_AND_SOURCE_PREFIX + id)) {
     map?.addSource(LAYERS_AND_SOURCE_PREFIX + id, props);
   }
 };
-const addLayer = (map: Map | undefined, props: AnyLayer) => {
+const addLayer = (map: Map | undefined, props: LayerSpecification) => {
   if (!map?.getLayer(LAYERS_AND_SOURCE_PREFIX + props.id)) {
     map?.addLayer({
       ...props,
       id: LAYERS_AND_SOURCE_PREFIX + props.id,
-      source: LAYERS_AND_SOURCE_PREFIX + (props as LineLayer).source
-    } as AnyLayer);
+      source: LAYERS_AND_SOURCE_PREFIX + (props as LineLayerSpecification).source
+    } as LayerSpecification);
   }
 };
 const setData = (map: Map | undefined, id: string, data: FeatureCollection<Geometry>) => {
@@ -403,7 +403,7 @@ Lat: ${y}`
           fInM.clone().move(fullLength, fullLength).metersToDegree(),
           fInM.clone().move(fullLength, -fullLength).metersToDegree(),
           fInM.clone().move(-fullLength, -fullLength).metersToDegree()
-        ]).toArrayOfCoords('xy');
+        ]).toArrayOfCoords('xy') as [[number, number], [number, number], [number, number], [number, number]];
 
         addSource(map, 'direction-area-vis-raster', {
           type: 'image',
@@ -582,7 +582,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           id: "distance-polygon",
           'type': 'line',
@@ -618,7 +618,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           'id': 'area-polygon',
           'type': 'fill',
@@ -664,7 +664,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           'id': 'direction-polygon',
           'type': 'fill',
@@ -710,7 +710,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           id: "direction-area-vis-polygon-lines",
           'type': 'line',
@@ -741,7 +741,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           'id': 'direction-alt-polygon',
           'type': 'fill',
@@ -786,7 +786,7 @@ Lat: ${y}`
             "type": "FeatureCollection",
             "features": []
           }
-        });
+        } as SourceSpecification);
         addLayer(map, {
           id: "points",
           'type': 'symbol',
@@ -823,7 +823,7 @@ Lat: ${y}`
     prevTool.current = currentTool;
   }, [currentTool, map]);
 
-  const mapClickHandler = useCallback((e: EventData) => {
+  const mapClickHandler = useCallback((e: MapMouseEvent | MapTouchEvent) => {
     switch (currentTool) {
       case ToolTypes.Line:
         distanceLines.current[distanceLines.current.length - 1].push(DPoint.parse(e.lngLat));
@@ -892,7 +892,7 @@ Lat: ${y}`
     }
   }, [currentTool]);
 
-  const mapMoveHandler = useCallback((e: EventData) => {
+  const mapMoveHandler = useCallback((e: MapMouseEvent | MapTouchEvent) => {
     switch (currentTool) {
       case ToolTypes.Line:
         distanceLines.current[distanceLines.current.length - 1].pop();

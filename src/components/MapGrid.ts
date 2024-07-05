@@ -17,34 +17,36 @@ export const addGrid = (map?: Map) => {
 
   if (useMapStore.getState().showGrid) {
     const bounds = map.getBounds();
-    const s = bounds.getSouth();
-    const w = bounds.getWest();
-    const e = bounds.getEast();
-    const n = bounds.getNorth();
-    const step = 2 ** Math.ceil(Math.log2(Math.min(Math.abs(s - n) / 4, Math.abs(w - e) / 4)));
+    if (bounds) {
+      const s = bounds.getSouth();
+      const w = bounds.getWest();
+      const e = bounds.getEast();
+      const n = bounds.getNorth();
+      const step = 2 ** Math.ceil(Math.log2(Math.min(Math.abs(s - n) / 4, Math.abs(w - e) / 4)));
 
-    for (let lng = -180; lng <= 180; lng += step) {
-      if (lng >= w && lng <= e) {
-        graticule.features.push({
-          type: 'Feature',
-          geometry: {type: 'LineString', coordinates: [[lng, s], [lng, n]]},
-          properties: {
-            value: lng,
-            caption: toDegreesMinutesSeconds(lng)
-          }
-        });
+      for (let lng = -180; lng <= 180; lng += step) {
+        if (lng >= w && lng <= e) {
+          graticule.features.push({
+            type: 'Feature',
+            geometry: {type: 'LineString', coordinates: [[lng, s], [lng, n]]},
+            properties: {
+              value: lng,
+              caption: toDegreesMinutesSeconds(lng)
+            }
+          });
+        }
       }
-    }
-    for (let lat = -90; lat <= 90; lat += step) {
-      if (lat >= s && lat <= n) {
-        graticule.features.push({
-          type: 'Feature',
-          geometry: {type: 'LineString', coordinates: [[w, lat], [e, lat]]},
-          properties: {
-            value: lat,
-            caption: toDegreesMinutesSeconds(lat)
-          }
-        });
+      for (let lat = -90; lat <= 90; lat += step) {
+        if (lat >= s && lat <= n) {
+          graticule.features.push({
+            type: 'Feature',
+            geometry: {type: 'LineString', coordinates: [[w, lat], [e, lat]]},
+            properties: {
+              value: lat,
+              caption: toDegreesMinutesSeconds(lat)
+            }
+          });
+        }
       }
     }
   }

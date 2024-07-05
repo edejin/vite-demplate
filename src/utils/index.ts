@@ -7,7 +7,7 @@ export type SetStateAction<S> = S | ((prevState: S) => S);
 
 export const isFunction = (f: any): boolean => typeof f === 'function';
 
-export const useActionByName = <T, K>(newValue: SetStateAction<K>, name: keyof T) =>  (s: T) => ({[name]: isFunction(newValue) ? newValue(s[name]) : newValue})
+export const useActionByName = <T, K>(newValue: SetStateAction<K>, name: keyof T) =>  (s: T) => ({[name]: isFunction(newValue) ? (newValue as (v: K) => K)(s[name] as K) : newValue})
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export const log = (...args: any[]) => {
