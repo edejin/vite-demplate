@@ -944,7 +944,7 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.17.1.tgz#bf93997beb81863fde042ebd05013a2618471362"
   integrity sha512-mCOMec4BKd6BRGBZeSnGiIgwsbLGp3yhVqAD8H+PxiRNEHgDpZb8J1TnrSDlg97t0ySKMQJTHCWBCmBpSmkF6Q==
 
-"@rollup/pluginutils@^5.0.5":
+"@rollup/pluginutils@^5.0.5", "@rollup/pluginutils@^5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.0.tgz#7e53eddc8c7f483a4ad0b94afb1f7f5fd3c771e0"
   integrity sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==
@@ -3206,6 +3206,13 @@ rollup-obfuscator@^4.1.1:
   integrity sha512-eAZtlFEc8gTASEJjpWrjRrRaIMC42xNaMyRbNB95QozPKUmittoGS/Q+wYtZsqvT4N75mtHkFmzsgfFpOwpkUA==
   dependencies:
     "@rollup/pluginutils" "^5.0.5"
+
+rollup-plugin-obfuscator@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-obfuscator/-/rollup-plugin-obfuscator-1.1.0.tgz#b37ad681b0e161188e6194f6080899a78a0768d3"
+  integrity sha512-cMfQIKyGePlfHGGO+rSDhSATMBx7WWxXW/X66c53HylUE/owanTbG6nhttUQOkbdCiQH8tClskNEH/IPRoqZwA==
+  dependencies:
+    "@rollup/pluginutils" "^5.1.0"
 
 rollup@^4.13.0:
   version "4.17.2"

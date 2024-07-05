@@ -3,10 +3,11 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import {viteStaticCopy} from 'vite-plugin-static-copy';
-import { obfuscator } from 'rollup-obfuscator';
-import Options from '@vitejs/plugin-react';
+import obfuscator from 'rollup-plugin-obfuscator';
+import {ObfuscatorOptions} from 'javascript-obfuscator';
 
 const splitToChunks = true;
+const obfuscatorPreset: 'default' | 'low-obfuscation' | 'medium-obfuscation' | 'high-obfuscation' | 'none' = 'medium-obfuscation';
 
 // https://vitejs.dev/config/
 export default ({mode}) => {
@@ -45,13 +46,15 @@ export default ({mode}) => {
     })
   ];
 
-  if (!isDev) {
+  if (!isDev && obfuscatorPreset !== 'none') {
     plugins.push(
       obfuscator({
         options: {
-          optionsPreset: 'high-obfuscation'
-        }
-      } as Options)
+          // Your javascript-obfuscator options here
+          // See what's allowed: https://github.com/javascript-obfuscator/javascript-obfuscator
+          optionsPreset: obfuscatorPreset
+        } as ObfuscatorOptions,
+      }),
     )
   }
 
