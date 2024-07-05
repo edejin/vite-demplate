@@ -13,11 +13,10 @@ const Wrapper = styled.div`
 `;
 
 export const LanguageSwitcher = () => {
-  const locale = useLocaleStore(store => store.locale);
   const setLocale = useLocaleStore(store => store.setLocale);
 
   return (
-    <Wrapper onClick={() => setLocale(locale === Locale.EN ? Locale.AR : Locale.EN)}>
+    <Wrapper onClick={() => setLocale((locale) => locale === Locale.EN ? Locale.AR : Locale.EN)}>
       <TranslationOutlined/>
     </Wrapper>
   );

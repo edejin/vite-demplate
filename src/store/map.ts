@@ -3,6 +3,7 @@ import {Map} from 'mapbox-gl';
 import {mapMiddleware} from '@/middleware/map';
 import {StateCreator} from 'zustand';
 import {persistMiddlewareCreator} from '@/utils/persist2Middleware';
+import {SetStateAction, useActionByName} from '@/utils';
 
 export enum MapStyles {
   Satellite,
@@ -20,19 +21,19 @@ export interface MapStore {
   style: MapStyles;
   setStyle: (style: MapStyles) => void;
   projection: Projections;
-  setProjection: (projection: Projections) => void;
+  setProjection: (projection: SetStateAction<Projections>) => void;
   showGrid: boolean;
-  setShowGrid: (showGrid: boolean) => void;
+  setShowGrid: (showGrid: SetStateAction<boolean>) => void;
 }
 
 const store: StateCreator<MapStore> = (set/*, get*/) => ({
-  setMap: (map?: Map) => set(() => ({map})),
+  setMap: (map?: Map) => set({map}),
   style: MapStyles.Vector,
   setStyle: (style: MapStyles) => set({style}),
   projection: Projections.Mercator,
-  setProjection: (projection: Projections) => set({projection}),
+  setProjection: (projection: SetStateAction<Projections>) => set(useActionByName<MapStore, Projections>(projection, 'projection')),
   showGrid: false,
-  setShowGrid: (showGrid: boolean) => set({showGrid})
+  setShowGrid: (showGrid: SetStateAction<boolean>) => set(useActionByName<MapStore, boolean>(showGrid, 'showGrid'))
 });
 
 export const useMapStore = applyMiddleware<MapStore>(store, [

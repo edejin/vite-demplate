@@ -130,8 +130,8 @@ export class MapGrid {
         <img src="${Grid}" alt="">
         </button>`;
     div.addEventListener("click", () => {
-      const {showGrid, setShowGrid} = useMapStore.getState();
-      setShowGrid(!showGrid);
+      const {setShowGrid} = useMapStore.getState();
+      setShowGrid(v => !v);
       addGrid(map);
     });
     this.unsubscribe = useMapStore.subscribe(() => {

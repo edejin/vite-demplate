@@ -3,6 +3,12 @@ import {shallow} from 'zustand/shallow';
 
 export const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
+export type SetStateAction<S> = S | ((prevState: S) => S);
+
+export const isFunction = (f: any): boolean => typeof f === 'function';
+
+export const useActionByName = <T, K>(newValue: SetStateAction<K>, name: keyof T) =>  (s: T) => ({[name]: isFunction(newValue) ? newValue(s[name]) : newValue})
+
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export const log = (...args: any[]) => {
   if (isDev) {
@@ -117,6 +123,18 @@ export function useDeepSelector<S extends object, P extends keyof S>(paths: stri
   };
 }
 
+export enum FileContentType {
+  CSS = 'text/css',
+  CSV = 'text/csv',
+  HTML = 'text/html',
+  JS = 'text/javascript',
+  JSON = 'application/json',
+  PNG = 'image/png',
+  SVG = 'image/svg+xml',
+  TXT = 'text/plain',
+  ZIP = 'application/zip' // is the standard, but beware that Windows uploads .zip with MIME type `application/x-zip-compressed`.
+}
+
 /**
  * Download file from front-end.
  * If text file should support Arabic (e.g., `csv`, `txt`) than you should start it from '\ufeff' (to support UTF-8 with BOM)
@@ -124,7 +142,7 @@ export function useDeepSelector<S extends object, P extends keyof S>(paths: stri
  * @param type Content type
  * @param byte Typed array or string
  */
-export const downloadFile = (fileName: string, type: string, byte: any) => {
+export const downloadFile = (fileName: string, type: FileContentType, byte: BlobPart) => {
   const blob = new Blob([byte], {type});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
