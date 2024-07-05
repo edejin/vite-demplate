@@ -28,8 +28,5 @@ Also contain:
 - [StyledComponents](https://styled-components.com/)
 - [AntD](https://ant.design/)
 - [I18n](https://formatjs.io/docs/getting-started/installation)
-- [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
+- [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/)
 - [React Router DOM](https://reactrouter.com/en/main)
-
-### Old version
-[Here](https://github.com/edejin/cra-template-demplate)
