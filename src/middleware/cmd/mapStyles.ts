@@ -1,5 +1,5 @@
 import {MapStyles, useMapStore} from '@/store/map';
-import {Style} from 'mapbox-gl';
+import {StyleSpecification} from 'mapbox-gl';
 import lightMapStyle from '@/assets/map-styles/style-light.json';
 import darkMapStyle from '@/assets/map-styles/style-dark.json';
 import {Theme, useThemeStore} from '@/store/theme';
@@ -8,7 +8,7 @@ import darkSatMapStyle from '@/assets/map-styles/style-sat-dark.json';
 import {addGrid} from '@/components/MapGrid';
 import {waitForStyles} from '@/utils/map';
 
-export const calculateMapStyle = (): Style => {
+export const calculateMapStyle = (): StyleSpecification => {
   const {
     theme
   } = useThemeStore.getState();
@@ -47,7 +47,7 @@ export const calculateMapStyle = (): Style => {
   if (resultTheme.sprite) {
     resultTheme.sprite = resultTheme.sprite.replaceAll('__REPLACE_ME__', path);
   }
-  return resultTheme as Style;
+  return resultTheme as StyleSpecification;
 };
 
 export const changeMapStyle = () => {

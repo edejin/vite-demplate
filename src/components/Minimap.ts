@@ -1,4 +1,4 @@
-import {GeoJSONSource, Map, MapMouseEvent, SourcesSpecification} from 'mapbox-gl';
+import {GeoJSONSource, Map, MapMouseEvent, SourcesSpecification, StyleSpecification, GeoJSONSourceSpecification} from 'mapbox-gl';
 import {sleep} from '@/utils';
 import type {Position} from 'geojson';
 import {waitForStyles} from '@/utils/map';
@@ -35,7 +35,7 @@ const addData = (src: Map, target: Map, c?: Position[][]) => {
         }
       ]
     }
-  });
+  } as GeoJSONSourceSpecification);
   target.addLayer({
     id: 'target-json',
     source: 'target-json',
@@ -182,13 +182,13 @@ export class Minimap {
           currentStyleKey = tStyle;
           const style = map.getStyle();
           if (style) {
-            const {version = 8, sources, ...t} = style;
+            const {version = 8, sources ={}, layers = [], ...t} = style;
             this.map.setStyle({
-              version,
-              sources: sources ?? {},
               ...t,
-              layers: (t?.layers ?? []).filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
-            });
+              version,
+              sources,
+              layers: layers.filter(e => !e.id.includes('graticule') && !e.id.includes('measure-tools-'))
+            } as StyleSpecification);
 
             await waitForStyles(this.map);
             this.map.addSource('target-json', {
@@ -204,7 +204,7 @@ export class Minimap {
                   }
                 }] : []
               }
-            });
+            } as GeoJSONSourceSpecification);
             this.map.addLayer({
               id: 'target-json',
               source: 'target-json',

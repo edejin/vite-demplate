@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import MB, {Map, MapboxOptions} from 'mapbox-gl';
+import MB, {Map, MapOptions} from 'mapbox-gl';
 import styled from 'styled-components';
 import {calculateMapStyle} from '@/middleware/cmd/mapStyles';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -20,7 +20,7 @@ const MapElement = styled.div`
   position: relative;
 `;
 
-interface Props extends Omit<MapboxOptions, 'container' | 'style'> {
+interface Props extends Omit<MapOptions, 'container' | 'style'> {
   callback?: (m?: Map) => void;
   className?: string;
   style?: CSSProperties;
